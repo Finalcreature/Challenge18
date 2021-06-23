@@ -16,7 +16,7 @@ public class SignInEngine : MonoBehaviour
     void Start()
     {
         isUsernameValid = false;
-        jsonLocation = Application.dataPath + "/JsonFiles/signIn.json";
+        jsonLocation = Application.dataPath + "/Resources/JsonFiles/signIn.json";
         signInDetails = new Dictionary<string, string>();
     }
 
@@ -32,8 +32,8 @@ public class SignInEngine : MonoBehaviour
     {
         signInDetails.Clear();//Clear Dictionary to prevent adding same Key names
         signInDetails.Add("checkUsername", userNameTextBox.GetComponent<Text>().text);
-        JasonManager.CreateJson(signInDetails, Application.dataPath + "/JsonFiles/checkUsername.json");
-        StartCoroutine(JasonManager.PostData(Application.dataPath + "/JsonFiles/checkUsername.json"));
+        JasonManager.CreateJson(signInDetails, Application.dataPath + "/Resources/JsonFiles/checkUsername.json");
+        StartCoroutine(JasonManager.PostData(Application.dataPath + "/Resources/JsonFiles/checkUsername.json"));
         StartCoroutine(CheckSignIn(userNameTextBox.transform.parent.gameObject));
         StartCoroutine(TryLogIn());
     }

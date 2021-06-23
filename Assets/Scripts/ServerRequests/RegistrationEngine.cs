@@ -22,7 +22,7 @@ public class RegistrationEngine : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        jsonLocation = Application.dataPath + "/JsonFiles/register.json";
+        jsonLocation = Application.dataPath + "/Resources/JsonFiles/register.json";
         registerDetails = new Dictionary<string, string>();
         errorText.gameObject.SetActive(false);
         userNameTextBox.transform.GetChild(2).gameObject.SetActive(false);
@@ -52,8 +52,8 @@ public class RegistrationEngine : MonoBehaviour
         {
             Dictionary<string, string> usernameCheck = new Dictionary<string, string>();
             usernameCheck.Add("checkUsername", userName);
-            JasonManager.CreateJson(usernameCheck, Application.dataPath + "/JsonFiles/checkUsername.json");
-            StartCoroutine(JasonManager.PostData(Application.dataPath + "/JsonFiles/checkUsername.json"));
+            JasonManager.CreateJson(usernameCheck, Application.dataPath + "/Resources/JsonFiles/checkUsername.json");
+            StartCoroutine(JasonManager.PostData(Application.dataPath + "/Resources/JsonFiles/checkUsername.json"));
             CheckField(userNameTextBox);
         }
     }
@@ -74,8 +74,8 @@ public class RegistrationEngine : MonoBehaviour
         {
             Dictionary<string, string> phoneCheck = new Dictionary<string, string>();
             phoneCheck.Add("checkPhone", phone);
-            JasonManager.CreateJson(phoneCheck, Application.dataPath + "/JsonFiles/checkPhone.json");
-            StartCoroutine(JasonManager.PostData(Application.dataPath + "/JsonFiles/checkPhone.json"));
+            JasonManager.CreateJson(phoneCheck, Application.dataPath + "/Resources/JsonFiles/checkPhone.json");
+            StartCoroutine(JasonManager.PostData(Application.dataPath + "/Resources/JsonFiles/checkPhone.json"));
             CheckField(phoneTextBox);
         }
     }
