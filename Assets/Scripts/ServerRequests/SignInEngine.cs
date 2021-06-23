@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public class SignInEngine : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class SignInEngine : MonoBehaviour
     void Start()
     {
         isUsernameValid = false;
-        jsonLocation = Application.dataPath + "/Resources/JsonFiles/signIn.json";
+        jsonLocation = Application.dataPath + "/Resources/JsonFiles";
         signInDetails = new Dictionary<string, string>();
     }
 
@@ -32,8 +33,8 @@ public class SignInEngine : MonoBehaviour
     {
         signInDetails.Clear();//Clear Dictionary to prevent adding same Key names
         signInDetails.Add("checkUsername", userNameTextBox.GetComponent<Text>().text);
-        JasonManager.CreateJson(signInDetails, Application.dataPath + "/Resources/JsonFiles/checkUsername.json");
-        StartCoroutine(JasonManager.PostData(Application.dataPath + "/Resources/JsonFiles/checkUsername.json"));
+        JasonManager.CreateJson(signInDetails, jsonLocation + "/checkUsername.json");
+        StartCoroutine(JasonManager.PostData(jsonLocation + "/checkUsername.json"));
         StartCoroutine(CheckSignIn(userNameTextBox.transform.parent.gameObject));
         StartCoroutine(TryLogIn());
     }
@@ -45,8 +46,8 @@ public class SignInEngine : MonoBehaviour
             signInDetails.Clear();//Clear Dictionary to prevent adding same Key names
             signInDetails.Add("username", userNameTextBox.GetComponent<Text>().text);
             signInDetails.Add("phone", phoneTextBox.GetComponent<Text>().text); //972547932000
-            JasonManager.CreateJson(signInDetails, "signIn", jsonLocation);
-            StartCoroutine(JasonManager.PostData(jsonLocation));
+            JasonManager.CreateJson(signInDetails, "signIn", jsonLocation + "/signIn.json");
+            StartCoroutine(JasonManager.PostData(jsonLocation + "/signIn.json"));
             StartCoroutine(CheckSignIn(phoneTextBox.transform.parent.gameObject));
         }
     }
@@ -69,6 +70,7 @@ public class SignInEngine : MonoBehaviour
         }
         else
         {
+            File.WriteAllText(jsonLocation + "/UserDetails.json", JasonManager.data);
             //Login Approved
             SceneManager.LoadScene(2);                                               //Send to Dashboard
         }

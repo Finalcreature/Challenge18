@@ -6,15 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/BasicChat.unity
-    guid: 766924adcb471774ab36170e2d1283bd
-  - enabled: 1
-    path: Assets/Scenes/Dashboard.unity
-    guid: 91e82ab70fa793444a869276472fc949
+    path: Assets/Scenes/SignIn.unity
+    guid: 2c8ad01ccb4c2cd44acfb4597baa6579
   - enabled: 1
     path: Assets/Scenes/FillDetails.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/Scenes/SignIn.unity
-    guid: 2c8ad01ccb4c2cd44acfb4597baa6579
+    path: Assets/Scenes/Dashboard.unity
+    guid: 91e82ab70fa793444a869276472fc949
+  - enabled: 1
+    path: Assets/Scenes/BasicChat.unity
+    guid: 766924adcb471774ab36170e2d1283bd
   m_configObjects: {}
