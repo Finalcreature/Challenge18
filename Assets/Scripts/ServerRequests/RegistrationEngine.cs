@@ -16,13 +16,12 @@ public class RegistrationEngine : MonoBehaviour
 
     Dictionary<string, string> registerDetails;
     string jsonLocation;
-
     public bool isUsernameValid;
     public bool isPhoneValid;
     // Start is called before the first frame update
     void Start()
     {
-        jsonLocation = Application.dataPath + "/Resources/JsonFiles";
+        jsonLocation = Application.dataPath + "/JsonFiles/register.json";
         registerDetails = new Dictionary<string, string>();
         errorText.gameObject.SetActive(false);
         userNameTextBox.transform.GetChild(2).gameObject.SetActive(false);
@@ -52,8 +51,8 @@ public class RegistrationEngine : MonoBehaviour
         {
             Dictionary<string, string> usernameCheck = new Dictionary<string, string>();
             usernameCheck.Add("checkUsername", userName);
-            JasonManager.CreateJson(usernameCheck, jsonLocation + "/checkUsername.json");
-            StartCoroutine(JasonManager.PostData(jsonLocation + "/checkUsername.json"));
+            JasonManager.CreateJson(usernameCheck, Application.dataPath + "/JsonFiles/checkUsername.json");
+            StartCoroutine(JasonManager.PostData(Application.dataPath + "/JsonFiles/checkUsername.json"));
             CheckField(userNameTextBox);
         }
     }
@@ -74,8 +73,8 @@ public class RegistrationEngine : MonoBehaviour
         {
             Dictionary<string, string> phoneCheck = new Dictionary<string, string>();
             phoneCheck.Add("checkPhone", phone);
-            JasonManager.CreateJson(phoneCheck, jsonLocation + "/checkPhone.json");
-            StartCoroutine(JasonManager.PostData(jsonLocation + "/checkPhone.json"));
+            JasonManager.CreateJson(phoneCheck, Application.dataPath + "/JsonFiles/checkPhone.json");
+            StartCoroutine(JasonManager.PostData(Application.dataPath + "/JsonFiles/checkPhone.json"));
             CheckField(phoneTextBox);
         }
     }
@@ -115,9 +114,9 @@ public class RegistrationEngine : MonoBehaviour
             registerDetails.Add("fullname", fullNameTextBox.transform.GetChild(2).gameObject.GetComponent<Text>().text);
             registerDetails.Add("email", emailTextBox.transform.GetChild(2).gameObject.GetComponent<Text>().text);
             registerDetails.Add("language", languageSelection.GetComponentInChildren<Text>().text);
-            JasonManager.CreateJson(registerDetails, "register", jsonLocation + "/register.json");
-            StartCoroutine(JasonManager.PostData(jsonLocation + "/register.json"));
-            if (JasonManager.data.Contains(""))
+            JasonManager.CreateJson(registerDetails, "register", jsonLocation);
+            StartCoroutine(JasonManager.PostData(jsonLocation));
+            if(JasonManager.data.Contains(""))
             {
                 //Move to Dashboard
             }
