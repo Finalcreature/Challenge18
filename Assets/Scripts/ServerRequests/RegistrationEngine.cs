@@ -54,7 +54,7 @@ public class RegistrationEngine : MonoBehaviour
             usernameCheck.Add("checkUsername", userName);
             JasonManager.CreateJson(usernameCheck, jsonLocation + "/checkUsername.json");
             StartCoroutine(JasonManager.PostData(jsonLocation + "/checkUsername.json"));
-            CheckField(userNameTextBox);
+            StartCoroutine(CheckField());
         }
     }
     /// <summary>
@@ -76,7 +76,7 @@ public class RegistrationEngine : MonoBehaviour
             phoneCheck.Add("checkPhone", phone);
             JasonManager.CreateJson(phoneCheck, jsonLocation + "/checkPhone.json");
             StartCoroutine(JasonManager.PostData(jsonLocation + "/checkPhone.json"));
-            CheckField(phoneTextBox);
+            StartCoroutine(CheckField());
         }
     }
     /// <summary>
@@ -117,35 +117,50 @@ public class RegistrationEngine : MonoBehaviour
             registerDetails.Add("language", languageSelection.GetComponentInChildren<Text>().text);
             JasonManager.CreateJson(registerDetails, "register", jsonLocation + "/register.json");
             StartCoroutine(JasonManager.PostData(jsonLocation + "/register.json"));
-            if (JasonManager.data.Contains(""))
-            {
-                //Move to Dashboard
-            }
+            StartCoroutine(CheckField());
+            //Move To Dashbord
+
         }
         else
         {
             errorText.gameObject.SetActive(true);
         }
     }
-    private void CheckField(GameObject field)
+    private IEnumerator CheckField()
     {
-        if (JasonManager.data.Contains("Oops")) //UserName/Phone Exists in Server
+        yield return new WaitUntil(() => JasonManager.data != null);
+        if (JasonManager.data.Contains("This username"))
         {
-            field.transform.GetChild(3).gameObject.SetActive(true);
-            field.GetComponent<Image>().color = new Color32(153, 103, 103, 255); //Mark Filed Incorrect
-            if (field.transform.name == "UserName")
-                isUsernameValid = false;
-            else
-                isPhoneValid = false;
+            MarkFieldIncorrect(userNameTextBox);
+            isUsernameValid = false;
+        }
+        else if (JasonManager.data.Contains("This phone"))
+        {
+            MarkFieldIncorrect(phoneTextBox);
+            isPhoneValid = false;
         }
         else if (JasonManager.data.Contains("Great")) // Mark Field Ok
         {
-            field.transform.GetChild(3).gameObject.SetActive(false);
-            field.GetComponent<Image>().color = Color.white;
-            if (field.transform.name == "UserName")
+            if(JasonManager.data.Contains("username"))
+            {
+                MarkFieldCorrect(userNameTextBox);
                 isUsernameValid = true;
-            else
+            }
+            else if(JasonManager.data.Contains("phone"))
+            {
+                MarkFieldCorrect(phoneTextBox);
                 isPhoneValid = true;
+            }
         }
+    }
+    private void MarkFieldIncorrect(GameObject field)
+    {
+        field.transform.GetChild(3).gameObject.SetActive(true);
+        field.GetComponent<Image>().color = new Color32(153, 103, 103, 255); //Mark Filed Incorrect
+    }
+    private void MarkFieldCorrect(GameObject field)
+    {
+        field.transform.GetChild(3).gameObject.SetActive(false);
+        field.GetComponent<Image>().color = Color.white;
     }
 }
