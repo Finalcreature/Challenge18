@@ -10,7 +10,6 @@ using UnityEngine.SceneManagement;
 public static class JasonManager 
 {
     public static string data;
-
     /// <summary>
     /// Serealize Dictionary and Creates Json with RootKey attached
     /// </summary>
@@ -68,8 +67,9 @@ public static class JasonManager
     /// <param name="field">Current Input Field Being Checked</param>
     /// <param name="key">Register/SignIn</param>
     /// <returns></returns>
-    public static IEnumerator PostData(string directory, GameObject field, string key)
+    public static IEnumerator PostData(string directory)
     {
+        data = null;
         #region Define URL and JSON info file creation
         string url = "http://193.46.199.76:8087/api";
         #endregion
@@ -87,65 +87,6 @@ public static class JasonManager
         {
             Debug.Log(req.downloadHandler.text);
             data = req.downloadHandler.text;
-            switch (key)
-            {
-                case "signIn":
-                    {
-                        CheckSignIn(field, req);
-                        break;
-                    }
-                case "register":
-                    {
-                        CheckRegistration(field, req);
-                        break;
-                    }
-            }
-        }
-    }
-    private static void CheckRegistration(GameObject field, UnityWebRequest req)
-    {
-        if (req.downloadHandler.text.Contains("Oops")) //UserName/Phone Exists in Server
-        {
-            field.transform.GetChild(3).gameObject.SetActive(true);
-            field.GetComponent<Image>().color = new Color32(153, 103, 103, 255); //Mark Filed Incorrect
-            if (field.transform.name == "UserName")
-                field.GetComponentInParent<RegistrationEngine>().isUsernameValid = false;
-            else
-                field.GetComponentInParent<RegistrationEngine>().isPhoneValid = false;
-        }
-        else if (req.downloadHandler.text.Contains("Great")) // Mark Field Ok
-        {
-            field.transform.GetChild(3).gameObject.SetActive(false);
-            field.GetComponent<Image>().color = Color.white;
-            if (field.transform.name == "UserName")
-                field.GetComponentInParent<RegistrationEngine>().isUsernameValid = true;
-            else
-                field.GetComponentInParent<RegistrationEngine>().isPhoneValid = true;
-        }
-        else
-        { } // Send To Dashboard
-    }
-
-    private static void CheckSignIn(GameObject field, UnityWebRequest req)
-    {
-        if (req.downloadHandler.text.Contains("Oops")) //UserName Exists in Server
-        {
-            field.GetComponentInParent<SignInEngine>().isUsernameValid = true;
-            field.GetComponent<Image>().color = Color.white;
-        }
-        else if (req.downloadHandler.text.Contains("Great")) //UserName Doesnt Exists
-        {
-            field.GetComponentInParent<SignInEngine>().isUsernameValid = false;
-            field.GetComponent<Image>().color = new Color32(153, 103, 103, 255);
-        }
-        else if (req.downloadHandler.text.Contains("Bad")) //Password Incorrect
-        {
-            field.GetComponent<Image>().color = new Color32(153, 103, 103, 255);
-        }
-        else
-        {
-            //Login Approved
-            SceneManager.LoadScene(2);                                               //Send to Dashboard
         }
     }
 }

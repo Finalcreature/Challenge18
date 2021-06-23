@@ -53,7 +53,8 @@ public class RegistrationEngine : MonoBehaviour
             Dictionary<string, string> usernameCheck = new Dictionary<string, string>();
             usernameCheck.Add("checkUsername", userName);
             JasonManager.CreateJson(usernameCheck, Application.dataPath + "/JsonFiles/checkUsername.json");
-            StartCoroutine(JasonManager.PostData(Application.dataPath + "/JsonFiles/checkUsername.json", userNameTextBox, "register"));
+            StartCoroutine(JasonManager.PostData(Application.dataPath + "/JsonFiles/checkUsername.json"));
+            CheckField(userNameTextBox);
         }
     }
     /// <summary>
@@ -74,7 +75,8 @@ public class RegistrationEngine : MonoBehaviour
             Dictionary<string, string> phoneCheck = new Dictionary<string, string>();
             phoneCheck.Add("checkPhone", phone);
             JasonManager.CreateJson(phoneCheck, Application.dataPath + "/JsonFiles/checkPhone.json");
-            StartCoroutine(JasonManager.PostData(Application.dataPath + "/JsonFiles/checkPhone.json", phoneTextBox, "register"));
+            StartCoroutine(JasonManager.PostData(Application.dataPath + "/JsonFiles/checkPhone.json"));
+            CheckField(phoneTextBox);
         }
     }
     /// <summary>
@@ -114,12 +116,36 @@ public class RegistrationEngine : MonoBehaviour
             registerDetails.Add("email", emailTextBox.transform.GetChild(2).gameObject.GetComponent<Text>().text);
             registerDetails.Add("language", languageSelection.GetComponentInChildren<Text>().text);
             JasonManager.CreateJson(registerDetails, "register", jsonLocation);
-            StartCoroutine(JasonManager.PostData(jsonLocation, errorText.gameObject, "register"));
+            StartCoroutine(JasonManager.PostData(jsonLocation));
+            if(JasonManager.data.Contains(""))
+            {
+                //Move to Dashboard
+            }
         }
         else
         {
             errorText.gameObject.SetActive(true);
         }
     }
-
+    private void CheckField(GameObject field)
+    {
+        if (JasonManager.data.Contains("Oops")) //UserName/Phone Exists in Server
+        {
+            field.transform.GetChild(3).gameObject.SetActive(true);
+            field.GetComponent<Image>().color = new Color32(153, 103, 103, 255); //Mark Filed Incorrect
+            if (field.transform.name == "UserName")
+                isUsernameValid = false;
+            else
+                isPhoneValid = false;
+        }
+        else if (JasonManager.data.Contains("Great")) // Mark Field Ok
+        {
+            field.transform.GetChild(3).gameObject.SetActive(false);
+            field.GetComponent<Image>().color = Color.white;
+            if (field.transform.name == "UserName")
+                isUsernameValid = true;
+            else
+                isPhoneValid = true;
+        }
+    }
 }
