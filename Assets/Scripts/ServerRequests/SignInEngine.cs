@@ -33,7 +33,8 @@ public class SignInEngine : MonoBehaviour
         signInDetails.Clear();//Clear Dictionary to prevent adding same Key names
         signInDetails.Add("checkUsername", userNameTextBox.GetComponent<Text>().text);
         JasonManager.CreateJson(signInDetails, Application.dataPath + "/JsonFiles/checkUsername.json");
-        StartCoroutine(JasonManager.PostData(Application.dataPath + "/JsonFiles/checkUsername.json", userNameTextBox.transform.parent.gameObject, "signIn"));
+        StartCoroutine(JasonManager.PostData(Application.dataPath + "/JsonFiles/checkUsername.json"));
+        StartCoroutine(CheckSignIn(userNameTextBox.transform.parent.gameObject));
         StartCoroutine(TryLogIn());
     }
     IEnumerator TryLogIn()
@@ -45,7 +46,31 @@ public class SignInEngine : MonoBehaviour
             signInDetails.Add("username", userNameTextBox.GetComponent<Text>().text);
             signInDetails.Add("phone", phoneTextBox.GetComponent<Text>().text); //972547932000
             JasonManager.CreateJson(signInDetails, "signIn", jsonLocation);
-            StartCoroutine(JasonManager.PostData(jsonLocation, phoneTextBox.transform.parent.gameObject, "signIn"));
+            StartCoroutine(JasonManager.PostData(jsonLocation));
+            StartCoroutine(CheckSignIn(phoneTextBox.transform.parent.gameObject));
+        }
+    }
+    private IEnumerator CheckSignIn(GameObject field)
+    {
+        yield return new WaitUntil(() => JasonManager.data != null);
+        if (JasonManager.data.Contains("Oops")) //UserName Exists in Server
+        {
+            isUsernameValid = true;
+            field.GetComponent<Image>().color = Color.white;
+        }
+        else if (JasonManager.data.Contains("Great")) //UserName Doesnt Exists
+        {
+            isUsernameValid = false;
+            field.GetComponent<Image>().color = new Color32(153, 103, 103, 255);
+        }
+        else if (JasonManager.data.Contains("Bad")) //Password Incorrect
+        {
+            field.GetComponent<Image>().color = new Color32(153, 103, 103, 255);
+        }
+        else
+        {
+            //Login Approved
+            SceneManager.LoadScene(2);                                               //Send to Dashboard
         }
     }
     public void MoveToRegistration()
