@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class DashboardTest : MonoBehaviour
 {
@@ -67,7 +68,7 @@ public class DashboardTest : MonoBehaviour
     IEnumerator GetData()
     {
         yield return new WaitUntil(() => JasonManager.data != "");
-        data = JasonManager.data;
+        data = File.ReadAllText(Application.dataPath + "/Resources/JsonFiles/UserDetails.json");
         SetTexts();
     }
 
