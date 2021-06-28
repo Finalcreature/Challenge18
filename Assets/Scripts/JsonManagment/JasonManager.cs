@@ -82,6 +82,9 @@ public static class JasonManager
             temp = temp.Replace(":", "");
             temp = temp.Replace("\"", "");
             temp = temp.Replace("}", "");
+            temp = temp.Replace("\r\n  \r\n", "");
+            temp = temp.Replace("\r", "");
+            temp = temp.Replace("\n", "");
             if (temp.Contains(","))
             {
                 int breakindex = temp.IndexOf(",");
