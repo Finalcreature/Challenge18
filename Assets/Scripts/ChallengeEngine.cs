@@ -15,7 +15,6 @@ public class ChallengeEngine : MonoBehaviour
         daysArr = new Day[18];
         dayIndex = 0;
         challengeOptionsJSON = File.ReadAllText(Application.dataPath + "/Resources/JsonFiles/Challenge_Options.json");
-        Debug.Log(challengeOptionsJSON);
         foreach (Day day in daysArr)
         {
             daysArr[dayIndex] = FillDay();

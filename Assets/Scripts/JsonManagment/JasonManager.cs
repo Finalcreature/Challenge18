@@ -47,10 +47,12 @@ public static class JasonManager
     public static string ExtractData(string json, string key)
     {
         int keyIndex = json.IndexOf(key);
+        if (keyIndex < 0)
+            return "EMPTY"; //key isnt found in the JSON string
         string temp = json.Substring(keyIndex + key.Length + 2);
         if (temp.StartsWith(" "))
             temp = temp.Substring(1);
-        if (temp.StartsWith("{"))
+        if (temp.StartsWith("{"))  //check if the value is a dictionary
         {
             int breakIndex = 0;
             char[] tempArr = temp.ToCharArray();
@@ -67,14 +69,14 @@ public static class JasonManager
                 }
                 breakIndex++;    
             }
-            return temp.Substring(0, breakIndex); ;
+            return temp.Substring(0, breakIndex); // returns the dictionary in a string form
         }
-        else if(temp.StartsWith("["))
+        else if(temp.StartsWith("[")) // check if the value is a list of strings
         {
             int breakIndex = temp.IndexOf("]");
-            return temp.Substring(0, breakIndex);
+            return temp.Substring(0, breakIndex); // returns the list in a string form
         }
-        else
+        else // if nither a dictionaty nor list , returns a specific value
         {
             temp = temp.Replace("{", "");
             temp = temp.Replace(":", "");
