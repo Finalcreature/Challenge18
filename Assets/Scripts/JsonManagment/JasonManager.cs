@@ -46,20 +46,50 @@ public static class JasonManager
     /// <returns>string Value</returns>
     public static string ExtractData(string json, string key)
     {
-        string word = json.Substring(json.IndexOf(key));
-        word = word.Replace(key, "");
-        word = word.Replace(":", "");
-        word = word.Replace("\"", "");
-        word = word.Replace("}", "");
-
-        string input = word;
-        int index = input.IndexOf(",");
-        if (index > 0)
+        int keyIndex = json.IndexOf(key);
+        string temp = json.Substring(keyIndex + key.Length + 2);
+        if (temp.StartsWith(" "))
+            temp = temp.Substring(1);
+        if (temp.StartsWith("{"))
         {
-            word = input.Substring(0, index);
+            int breakIndex = 0;
+            char[] tempArr = temp.ToCharArray();
+            int count = 0;
+            foreach (char c in tempArr)
+            {
+                if (c.Equals('{'))
+                    count++;
+                else if (c.Equals('}'))
+                    count--;
+                if (count == 0)
+                {
+                    break;
+                }
+                breakIndex++;    
+            }
+            return temp.Substring(0, breakIndex); ;
         }
-        return word;
+        else if(temp.StartsWith("["))
+        {
+            int breakIndex = temp.IndexOf("]");
+            return temp.Substring(0, breakIndex);
+        }
+        else
+        {
+            temp = temp.Replace("{", "");
+            temp = temp.Replace(":", "");
+            temp = temp.Replace("\"", "");
+            temp = temp.Replace("}", "");
+            if (temp.Contains(","))
+            {
+                int breakindex = temp.IndexOf(",");
+                return temp.Substring(0, breakindex);
+            }
+            else return temp;
+        }
     }
+   
+
     /// <summary>
     /// Post Json from a specific library to server
     /// </summary>
