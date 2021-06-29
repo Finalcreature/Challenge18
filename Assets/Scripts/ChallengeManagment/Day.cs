@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 [System.Serializable]
 public class Day 
 {
@@ -24,17 +25,21 @@ public class Day
         foreach (Task task in tasks) 
         {
             string taskOptionsJSON;
+            bool isTaskCompleted = false;
+            //Currently not working as there is no full challenge json coming from server
+            //if (JasonManager.ExtractData(tasksJSON, "iscompleted").Equals("true"))
+            //    isTaskCompleted = true;
             List<string> taskOptions = new List<string>();
             taskOptionsJSON = JasonManager.ExtractData(tasksJSON, "task" + taskIndex.ToString());
             taskOptionsJSON = JasonManager.ExtractData(taskOptionsJSON, "options");
             taskOptions = SplitTaskOptions(taskOptionsJSON);
             if (taskOptions.Count >= 1)
             {
-                string randomTask = taskOptions[Random.Range(0, taskOptions.Count - 1)]; // randomly selects a task from the list
-                tasks[taskIndex - 1] = new Task(taskIndex, randomTask, dayTitle);
+                string randomTask = taskOptions[UnityEngine.Random.Range(0, taskOptions.Count - 1)]; // randomly selects a task from the list
+                tasks[taskIndex - 1] = new Task(taskIndex, randomTask, dayTitle, isTaskCompleted);
             }
             else
-                tasks[taskIndex - 1] = new Task(taskIndex, "EMPTY", dayTitle); // if no tasks in the pool, fills up "EMPTY"
+                tasks[taskIndex - 1] = new Task(taskIndex, "EMPTY", dayTitle, true); // if no tasks in the pool, fills up "EMPTY"
             taskIndex++;
         }
     }
@@ -69,5 +74,16 @@ public class Day
             index++;
         }
         return temp;
+    }
+    public Day GetNextDay(Challenge activeChallenge, Day activeDay)
+    {
+        try
+        {
+            return activeChallenge.daysArr[activeDay.dayNum];
+        }
+        catch
+        {
+            return null;
+        }
     }
 }
