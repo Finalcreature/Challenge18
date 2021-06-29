@@ -33,7 +33,7 @@ public static class JasonManager
     /// </summary>
     /// <param name="keyValuePairs">Dictionary</param>
     /// <param name="directory">File Location</param>
-    public static void CreateJson(Dictionary<string, string> keyValuePairs, string directory)
+    public static void CreateJson(object keyValuePairs, string directory)
     {
         string JSON = JsonConvert.SerializeObject(keyValuePairs); //Serealize Dictionary
         File.WriteAllText(directory, JSON);//Create Json File

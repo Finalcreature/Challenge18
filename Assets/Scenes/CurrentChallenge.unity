@@ -948,7 +948,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1615c38fb8a689147af2d47041b23ff6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  daysArr: []
+  challenge:
+    challengeID: 
+    daysArr:
+    - dayNum: 0
+      dayTitle: 
+      tasks: []
+    - dayNum: 0
+      dayTitle: 
+      tasks: []
+    - dayNum: 0
+      dayTitle: 
+      tasks: []
+    - dayNum: 0
+      dayTitle: 
+      tasks: []
+    - dayNum: 0
+      dayTitle: 
+      tasks: []
+    - dayNum: 0
+      dayTitle: 
+      tasks: []
+    - dayNum: 0
+      dayTitle: 
+      tasks: []
+    - dayNum: 0
+      dayTitle: 
+      tasks: []
+    - dayNum: 0
+      dayTitle: 
+      tasks: []
+    - dayNum: 0
+      dayTitle: 
+      tasks: []
+    - dayNum: 0
+      dayTitle: 
+      tasks: []
+    - dayNum: 0
+      dayTitle: 
+      tasks: []
+    - dayNum: 0
+      dayTitle: 
+      tasks: []
+    - dayNum: 0
+      dayTitle: 
+      tasks: []
+    - dayNum: 0
+      dayTitle: 
+      tasks: []
+    - dayNum: 0
+      dayTitle: 
+      tasks: []
+    - dayNum: 0
+      dayTitle: 
+      tasks: []
+    - dayNum: 0
+      dayTitle: 
+      tasks: []
 --- !u!1 &2031714688
 GameObject:
   m_ObjectHideFlags: 0

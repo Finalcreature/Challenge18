@@ -6,30 +6,41 @@ using System.IO;
 [System.Serializable]
 public class ChallengeEngine : MonoBehaviour
 {
-    [SerializeField] Day[] daysArr;
-    string challengeOptionsJSON;
-    int dayIndex;
+    [SerializeField] Challenge challenge;
+    string JSON;
+    private bool isNewChallenge;
     // Start is called before the first frame update
     void Start()
     {
-        daysArr = new Day[18];
-        dayIndex = 0;
-        challengeOptionsJSON = File.ReadAllText(Application.dataPath + "/Resources/JsonFiles/Challenge_Options.json");
-        foreach (Day day in daysArr)
+        isNewChallenge = true; // Delete late, Just for test
+        JSON = File.ReadAllText(Application.dataPath + "/Resources/JsonFiles/Challenge_Options.json"); // Delete late, Just for test
+        //CheckIfNewChallenge();
+        challenge = new Challenge(JSON, isNewChallenge);
+        JasonManager.CreateJson(challenge, Application.dataPath + "/Resources/JsonFiles/CurrentChallenge.json");
+        string newChallengeJSON = File.ReadAllText(Application.dataPath + "/Resources/JsonFiles/CurrentChallenge.json");
+        Debug.Log(newChallengeJSON);
+    }
+    /// <summary>
+    /// Checks if the user asked to join a new challenge or to open an existing one from server
+    /// </summary>
+    private void CheckIfNewChallenge()
+    {
+        if (JasonManager.ExtractData(SceneManagment.info, "newchallenge").Equals("true"))//Check if the user wants to join a new challenge
         {
-            daysArr[dayIndex] = FillDay();
-            dayIndex++;
+            JSON = File.ReadAllText(Application.dataPath + "/Resources/JsonFiles/Challenge_Options.json");
+            isNewChallenge = true;
         }
+        else // if the user wants to continue an existing challenge, SceneManagment.info will get the JSON of the challenge from the server
+        {
+            //JSON = SceneManagment.info;
+            isNewChallenge = false;
+        } 
+        SceneManagment.info = null;
     }
 
     // Update is called once per frame
     void Update()
     {
         
-    }
-    private Day FillDay()
-    {
-        string currentDayJSON = JasonManager.ExtractData(challengeOptionsJSON, "day" + (dayIndex + 1).ToString());
-        return new Day(dayIndex, JasonManager.ExtractData(currentDayJSON, "title"), JasonManager.ExtractData(currentDayJSON, "tasks"));
     }
 }
