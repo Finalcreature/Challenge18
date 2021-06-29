@@ -136,12 +136,6 @@ public class DashboardTest : MonoBehaviour
     public void JoinChallenge()
     {
         //TODO  add the challenge to poll
-        //Dictionary<string, string> newChallengeInfo = new Dictionary<string, string>();
-        //newChallengeInfo.Add("newchallenge", "true");
-        //newChallengeInfo.Add("challenge template", selectedTemplate);
-        //JasonManager.CreateJson(newChallengeInfo, Application.dataPath + "/Resources/JsonFiles/CurrentChallenge.json");
-        //string JSON = File.ReadAllText(Application.dataPath + "/Resources/JsonFiles/CurrentChallenge.json");
-        //SceneManagment.LoadScene("ChallengeEngine", 0, JSON);
         _joinChallengeP.SetActive(false);
     }
 
