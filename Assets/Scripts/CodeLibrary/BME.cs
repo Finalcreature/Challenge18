@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 
 namespace BME
 {
-    public static class JasonManager
+    public class JasonManager
     {
         public static string data;
         /// <summary>
@@ -155,7 +155,7 @@ namespace BME
             }
         }
     }
-    public static class Connection
+    public class Connection
     {
         public static void SignOut()
         {
@@ -163,7 +163,7 @@ namespace BME
             SceneManagment.LoadScene("SignIn", 0);
         }
     }
-    public static class Visuals 
+    public class Visuals 
     {
         public static void SelectToggle()
         {
