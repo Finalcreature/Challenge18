@@ -72,7 +72,7 @@ public class Side_Menu : MonoBehaviour
         else
         {
             contactMenu.SetActive(false);
-            menuCanvas.SetActive(true);
+            mainButtons.SetActive(true);
         }
     }
 
@@ -87,5 +87,14 @@ public class Side_Menu : MonoBehaviour
     public void Logout()
     {
         //sign out with the global library
+    }
+
+    /// <summary>
+    /// SideMenu func to send to app scenes
+    /// </summary>
+    /// <param name="SceneName">string Name of scene wanted</param>
+    public void SendToScene(string SceneName)
+    {
+        SceneManager.LoadScene(SceneName);
     }
 }
