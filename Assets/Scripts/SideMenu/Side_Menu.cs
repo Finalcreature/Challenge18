@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Side_Menu : MonoBehaviour
 {
@@ -81,5 +82,10 @@ public class Side_Menu : MonoBehaviour
     public void LinkToSite()
     {
         Application.OpenURL("https://ting.global/");
+    }
+
+    public void Logout()
+    {
+        //sign out with the global library
     }
 }
