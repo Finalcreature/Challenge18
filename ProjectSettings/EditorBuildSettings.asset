@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CurrentChallenge.unity
     guid: 0b05a1661e307034d82a66628cc5a05b
+  - enabled: 1
+    path: Assets/Scenes/CurrentChallenge.unity
+    guid: 0b05a1661e307034d82a66628cc5a05b
   m_configObjects: {}
