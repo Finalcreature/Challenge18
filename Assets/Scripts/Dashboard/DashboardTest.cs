@@ -140,7 +140,8 @@ public class DashboardTest : MonoBehaviour
     /// </summary>
     public void JoinChallenge()
     {
-        //TODO  add the challenge to poll
+        //TODO send post request to the server and get a new challenge json
+        StartCoroutine(SceneManagment.LoadScene("CurrentChallenge", 0, File.ReadAllText(Application.dataPath + "/Resources/JsonFiles/Challenge_Options.json")));
         _joinChallengeP.SetActive(false);
     }
 
