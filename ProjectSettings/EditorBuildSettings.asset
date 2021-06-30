@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BasicChat.unity
     guid: 766924adcb471774ab36170e2d1283bd
+  - enabled: 1
+    path: Assets/Scenes/CurrentChallenge.unity
+    guid: 0b05a1661e307034d82a66628cc5a05b
   m_configObjects: {}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using TMPro;
 
 public class DashboardTest : MonoBehaviour
 {
@@ -36,7 +37,7 @@ public class DashboardTest : MonoBehaviour
 
     string data;
     string temp;
-    [SerializeField] Text _usernameT, _phoneNumberT, _fullNameT, _emailT, _challengeLangT; //Texts == string variables from registration page
+    [SerializeField] TextMeshProUGUI _usernameT, _phoneNumberT, _fullNameT, _emailT, _challengeLangT; //Texts == string variables from registration page
     //Maybe replace by [] and use for-loop
 
     ///*[SerializeField]???*/ Button _editProfileBtn, _joinChallengeBtn, _sideMenuBtn;
@@ -67,7 +68,8 @@ public class DashboardTest : MonoBehaviour
 
     public void SetNewData(string newData) //TODO change string to a class
     {
-        
+        //TODO get the chagne request code
+        _editProfileP.SetActive(false);
     }
 
     IEnumerator GetData()
@@ -140,7 +142,8 @@ public class DashboardTest : MonoBehaviour
     /// </summary>
     public void JoinChallenge()
     {
-        //TODO  add the challenge to poll
+        //TODO send a post request and send it in the coroutine
+        StartCoroutine(SceneManagment.LoadScene("CurrentChallenge", 0, File.ReadAllText(Application.dataPath + "/Resources/JsonFiles/Challenge_Options.json")));
         _joinChallengeP.SetActive(false);
     }
 
