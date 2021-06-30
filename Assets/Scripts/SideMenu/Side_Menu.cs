@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Side_Menu : MonoBehaviour
 {
@@ -71,7 +72,7 @@ public class Side_Menu : MonoBehaviour
         else
         {
             contactMenu.SetActive(false);
-            menuCanvas.SetActive(true);
+            mainButtons.SetActive(true);
         }
     }
 
@@ -81,5 +82,19 @@ public class Side_Menu : MonoBehaviour
     public void LinkToSite()
     {
         Application.OpenURL("https://ting.global/");
+    }
+
+    public void Logout()
+    {
+        //sign out with the global library
+    }
+
+    /// <summary>
+    /// SideMenu func to send to app scenes
+    /// </summary>
+    /// <param name="SceneName">string Name of scene wanted</param>
+    public void SendToScene(string SceneName)
+    {
+        SceneManager.LoadScene(SceneName);
     }
 }

@@ -30,7 +30,7 @@ public class ChallengeEngine : MonoBehaviour
         linkButton.gameObject.SetActive(false);
         activeDay = null;
         activeTask = null;
-        challengeJSON = File.ReadAllText(Application.dataPath + "/Resources/JsonFiles/Challenge_Options.json"); // challengeJSON = SceneManagment.info;
+        challengeJSON = SceneManagment.info;
         SceneManagment.info = null;
         challenge = new Challenge(challengeJSON);
         challengeName.text = challenge.challengeTemplate;
@@ -47,7 +47,7 @@ public class ChallengeEngine : MonoBehaviour
         //            t.isTaskCompleted = true;
         //            tasksCompleted--;
         //        }
-        //    }
+        //    } 
         //}
         // end
         foreach(Day day in challenge.daysArr)
