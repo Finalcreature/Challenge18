@@ -33,7 +33,7 @@ public static class JasonManager
     /// </summary>
     /// <param name="keyValuePairs">Dictionary</param>
     /// <param name="directory">File Location</param>
-    public static void CreateJson(Dictionary<string, string> keyValuePairs, string directory)
+    public static void CreateJson(object keyValuePairs, string directory)
     {
         string JSON = JsonConvert.SerializeObject(keyValuePairs); //Serealize Dictionary
         File.WriteAllText(directory, JSON);//Create Json File
@@ -46,20 +46,55 @@ public static class JasonManager
     /// <returns>string Value</returns>
     public static string ExtractData(string json, string key)
     {
-        string word = json.Substring(json.IndexOf(key));
-        word = word.Replace(key, "");
-        word = word.Replace(":", "");
-        word = word.Replace("\"", "");
-        word = word.Replace("}", "");
-
-        string input = word;
-        int index = input.IndexOf(",");
-        if (index > 0)
+        int keyIndex = json.IndexOf(key);
+        if (keyIndex < 0)
+            return "EMPTY"; //key isnt found in the JSON string
+        string temp = json.Substring(keyIndex + key.Length + 2);
+        if (temp.StartsWith(" "))
+            temp = temp.Substring(1);
+        if (temp.StartsWith("{"))  //check if the value is a dictionary
         {
-            word = input.Substring(0, index);
+            int breakIndex = 0;
+            char[] tempArr = temp.ToCharArray();
+            int count = 0;
+            foreach (char c in tempArr)
+            {
+                if (c.Equals('{'))
+                    count++;
+                else if (c.Equals('}'))
+                    count--;
+                if (count == 0)
+                {
+                    break;
+                }
+                breakIndex++;    
+            }
+            return temp.Substring(0, breakIndex); // returns the dictionary in a string form
         }
-        return word;
+        else if(temp.StartsWith("[")) // check if the value is a list of strings
+        {
+            int breakIndex = temp.IndexOf("]");
+            return temp.Substring(0, breakIndex); // returns the list in a string form
+        }
+        else // if nither a dictionaty nor list , returns a specific value
+        {
+            temp = temp.Replace("{", "");
+            temp = temp.Replace(":", "");
+            temp = temp.Replace("\"", "");
+            temp = temp.Replace("}", "");
+            temp = temp.Replace("\r\n  \r\n", "");
+            temp = temp.Replace("\r", "");
+            temp = temp.Replace("\n", "");
+            if (temp.Contains(","))
+            {
+                int breakindex = temp.IndexOf(",");
+                return temp.Substring(0, breakindex);
+            }
+            else return temp;
+        }
     }
+   
+
     /// <summary>
     /// Post Json from a specific library to server
     /// </summary>
