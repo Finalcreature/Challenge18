@@ -16,7 +16,7 @@ public static class JasonManager
     /// <param name="keyValuePairs">Dictionary</param>
     /// <param name="rootKey">Root Key</param>
     /// <param name="directory">File Location</param>
-    public static void CreateJson(Dictionary<string, string> keyValuePairs, string rootKey, string directory)
+    public static void CreateJson(object keyValuePairs, string rootKey, string directory)
     {
         string JSON = JsonConvert.SerializeObject(keyValuePairs); //Serealize Dictionary
         var jsonObj = JObject.Parse(JSON); 

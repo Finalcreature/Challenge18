@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
-using UnityEngine.SceneManagement;
 using System.IO;
 
 public class SignInEngine : MonoBehaviour
@@ -91,12 +90,12 @@ public class SignInEngine : MonoBehaviour
             //Login Approved
             if (!keepSignedIn)
                 File.Delete(jsonLocation + "/signIn.json");
-            SceneManager.LoadScene(2);                                               //Send to Dashboard
+            StartCoroutine(SceneManagment.LoadScene("Dashboard", 0));           //Send to Dashboard
         }
     }
     public void MoveToRegistration()
     {
-        SceneManager.LoadScene(1);
+        StartCoroutine(SceneManagment.LoadScene("FillDetails", 0));
     }
     public void IsKeepSignedInOn()
     {
