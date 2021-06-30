@@ -16,4 +16,9 @@ public class CreateChallenge : MonoBehaviour
     {
         
     }
+    public void ShowToggleSelection()
+    {
+        Visuals.SelectToggle();
+    }
+
 }

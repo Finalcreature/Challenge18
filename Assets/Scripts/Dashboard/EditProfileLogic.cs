@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using TMPro;
+using BME;
 
 public class EditProfileLogic : MonoBehaviour
 {

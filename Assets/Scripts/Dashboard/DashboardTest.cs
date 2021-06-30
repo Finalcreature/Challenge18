@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using TMPro;
+using BME;
 
 public class DashboardTest : MonoBehaviour
 {
@@ -88,7 +89,7 @@ public class DashboardTest : MonoBehaviour
                 break;
             case ("Join"):
                 { _joinChallengeP.SetActive(true);
-                    SelectToggle();
+                    Visuals.SelectToggle();
                 }
                 break;
             default:
@@ -147,20 +148,8 @@ public class DashboardTest : MonoBehaviour
         _joinChallengeP.SetActive(false);
     }
 
-    public void SelectToggle()
+    public void ShowToggleSelection()
     {
-        ColorBlock cb = new ColorBlock();
-        foreach (Toggle t in FindObjectsOfType<Toggle>())
-        {
-            if (t.isOn)
-            {
-                t.targetGraphic.color = t.colors.selectedColor;
-            }
-            else
-            {
-                t.targetGraphic.color = cb.normalColor;
-            }
-        }
-
+        Visuals.SelectToggle();
     }
 }
