@@ -27,7 +27,24 @@ namespace BME
             {
                 [rootKey] = jsonObj, //Add Root Key to Excisting Dictionary
             };
+
             string newJsonString = newObj.ToString();
+            Debug.Log(newJsonString);
+            File.WriteAllText(directory, newJsonString);//Create Json File
+        }
+        /// <summary>
+        /// Creates a double dimantion dictionary json 
+        /// </summary>
+        /// <param name="keyValuePairs">inside Dictionary</param>
+        /// <param name="rootKey">inside Root Key</param>
+        /// <param name="bigKeyValue">big dictionary</param>
+        /// <param name="directory">File Location</param>
+
+        public static void CreateJson(Dictionary<string, string> keyValuePairs, string rootKey, Dictionary<string, string> bigKeyValue, string directory)
+        {
+            string JSON = JsonConvert.SerializeObject(keyValuePairs); //Serealize Dictionary
+            bigKeyValue.Add(rootKey, JSON); // adds the rootkey and serialized dictionary to the big dictionary
+            string newJsonString = JsonConvert.SerializeObject(bigKeyValue);//Serealize Dictionary
             Debug.Log(newJsonString);
             File.WriteAllText(directory, newJsonString);//Create Json File
         }
@@ -142,6 +159,7 @@ namespace BME
             UnityWebRequest req = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST); //class handles the request with url and request kind, in this case kHttpVerbPOST==POST
             req.uploadHandler = new UploadHandlerFile(directory);// define the json File to Upload to server
             req.downloadHandler = new DownloadHandlerBuffer(); // expected response of server, its a buffer to adjust to any response and not be empty
+            req.SetRequestHeader("Content-Type", "application/json"); //Definition of Headers, cann add more like Dictionary, USED to tell server what to expect in request
             req.SetRequestHeader("Authorization", accessToken); //Definition of Headers, cann add more like Dictionary, USED to tell server what to expect in request
             #endregion
 
