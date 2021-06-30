@@ -65,6 +65,11 @@ public class DashboardTest : MonoBehaviour
 
     }
 
+    public void SetNewData(string newData) //TODO change string to a class
+    {
+        
+    }
+
     IEnumerator GetData()
     {
         yield return new WaitUntil(() => JasonManager.data != "");
