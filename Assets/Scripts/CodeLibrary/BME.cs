@@ -183,18 +183,20 @@ namespace BME
     }
     public class Visuals 
     {
+        public static GameObject selectedToggle;
         public static void SelectToggle()
         {
-            ColorBlock cb = new ColorBlock();
+            selectedToggle = null;
             foreach (Toggle t in MonoBehaviour.FindObjectsOfType<Toggle>())
             {
                 if (t.isOn)
                 {
                     t.targetGraphic.color = t.colors.selectedColor;
+                    selectedToggle = t.gameObject;
                 }
                 else
                 {
-                    t.targetGraphic.color = cb.normalColor;
+                    t.targetGraphic.color = t.colors.normalColor;
                 }
             }
 
