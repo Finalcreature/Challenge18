@@ -7,9 +7,9 @@ using System;
 /// <summary>
 /// AudioManager Singelton used to create and control Audioclips,sources and Listener
 /// </summary>
-public class AudioManager : MonoBehaviour
+public class AudioManager2 : MonoBehaviour
 {
-	public static AudioManager instance;
+	public static AudioManager2 instance;
 	public Sound[] sounds;
 	private AudioSource mysource;
 	private Sound BGM;
