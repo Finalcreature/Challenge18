@@ -1,7 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using JSAM;
 
 public class Side_Menu : MonoBehaviour
 {
@@ -17,7 +20,9 @@ public class Side_Menu : MonoBehaviour
     [SerializeField] GameObject menuCanvas;
     [SerializeField] GameObject mainButtons;
     [SerializeField] GameObject contactMenu;
+    [SerializeField] private List<AudioFileObject> soundLibrary;
     
+        
     private void Awake()
     {
         #region Singleton
@@ -30,7 +35,8 @@ public class Side_Menu : MonoBehaviour
         _instance = this;
         DontDestroyOnLoad(this.gameObject);
         #endregion
-        menuCanvas.SetActive(false);
+        menuCanvas.SetActive(false);  
+        soundLibrary = AudioManager.instance.GetSoundLibrary(); // the sound librart known to AudioManager
     }
 
     private void Start()
@@ -43,7 +49,7 @@ public class Side_Menu : MonoBehaviour
     /// </summary>
     public void DisplayMenu()
     {
-        if(menuCanvas.activeInHierarchy)
+        if (menuCanvas.activeInHierarchy)
             menuCanvas.SetActive(false);
         else
         {
@@ -54,9 +60,8 @@ public class Side_Menu : MonoBehaviour
                 contactMenu.SetActive(false);
             }
             else
-                contactMenu.SetActive(false);         
-        }
-        AudioManager.instance.Play("Button1");
+                contactMenu.SetActive(false);
+        }     
     }
 
     /// <summary>
@@ -96,5 +101,16 @@ public class Side_Menu : MonoBehaviour
     public void SendToScene(string SceneName)
     {
         SceneManager.LoadScene(SceneName);
+    }
+    public void Play_SideMenu(string soundName)
+    {
+        if(Enum.IsDefined(typeof(Sounds), soundName)) // if the sounds enum contains the said sound
+        {
+            for(int i = 0; i < soundLibrary.Count; i++)
+            {
+                if (soundLibrary[i].name == soundName)
+                    AudioManager.instance.PlaySoundInternal(i);
+            }
+        }
     }
 }
