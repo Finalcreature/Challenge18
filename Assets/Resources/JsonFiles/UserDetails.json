@@ -1,4 +1,1 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
-<title>500 Internal Server Error</title>
-<h1>Internal Server Error</h1>
-<p>The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.</p>
+{"access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MjU0OTA4NTMsImlhdCI6MTYyNTQwNDQ0OCwic3ViIjoiOTcyNTQ3OTMyMDAwQGMudXMifQ.PSwCAAAoGvNJt3urvmMwsD5hfhfuQL-W5JYpPmCPvic","exp":"Mon, 05 Jul 2021 13:14:13 GMT","user":{"accountType":"individual","days":{"-1":2,"-4":0,"0":0,"1":1,"10":0,"11":1,"12":1,"13":1,"14":0,"15":1,"16":0,"17":10,"19":10,"2":0,"3":1,"30":3,"31":1,"32":5,"4":1,"46":0,"5":0,"500":1,"502":4,"503":1,"505":0,"507":1,"508":0,"511":1,"6":3,"7":1,"8":8,"9998":6},"email":"sadasd@fdf.com","fullName":"John Doe","id":"972547932000@c.us","language":"French","paid":false,"phone":"+972547932000","plan":"free","score":358,"username":"tami"}}
