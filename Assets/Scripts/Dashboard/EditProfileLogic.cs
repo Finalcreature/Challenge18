@@ -21,17 +21,13 @@ public class EditProfileLogic : MonoBehaviour
     public void Change()
     {
         
-        Dictionary<string, string> keys = new Dictionary<string, string>();
-        keys.Add("userID", "972549603373@c.co");
-        JasonManager.CreateJson(keys,  Application.dataPath + "/Resources/JsonFiles/NewName.json");
-        Json = File.ReadAllText(Application.dataPath + "/Resources/JsonFiles/NewName.json");
-        Invoke("SetNewDetails", 3);
-    }
-
-    public void SetNewDetails()
-    {
-        JasonManager.CreateJson(Json, "editProfile", Application.dataPath + "/Resources/JsonFiles/NewName.json");
-        print(Application.dataPath + "/Resources/JsonFiles/NewName.json");
+        Dictionary<string, object> keys = new Dictionary<string, object>();
+        keys.Add("userID", "972547932000@c.us");
+        Dictionary<string, string> edit = new Dictionary<string, string>();
+        edit.Add("email", "kfaaf@da.com");
+        edit.Add("fullName", "fwawfjk");
+        JasonManager.CreateJson(edit, "editProfile", keys ,  Application.dataPath + "/Resources/JsonFiles/NewName.json");
+        StartCoroutine(JasonManager.PostData(Application.dataPath + "/Resources/JsonFiles/NewName.json", JasonManager.ExtractData(File.ReadAllText(Application.dataPath + "/Resources/JsonFiles/UserDetails.json"), "access_token")));
     }
 
     // Update is called once per frame
