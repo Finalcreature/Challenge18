@@ -1,1 +1,6 @@
-{"user id":"dwaddwa","signIn":"{\"username\":\"Nadav\",\"phone\":\"972549603373\"}"}
+{
+  "signIn": {
+    "username": "Nadav",
+    "phone": "972549603373"
+  }
+}

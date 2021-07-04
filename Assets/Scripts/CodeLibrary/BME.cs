@@ -12,6 +12,7 @@ namespace BME
 {
     public class JasonManager
     {
+        
         public static string data;
         /// <summary>
         /// Serealize Dictionary and Creates Json with RootKey attached
