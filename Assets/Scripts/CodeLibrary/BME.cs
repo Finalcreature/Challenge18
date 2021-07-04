@@ -40,10 +40,11 @@ namespace BME
         /// <param name="bigKeyValue">big dictionary</param>
         /// <param name="directory">File Location</param>
 
-        public static void CreateJson(Dictionary<string, string> keyValuePairs, string rootKey, Dictionary<string, string> bigKeyValue, string directory)
+        public static void CreateJson(Dictionary<string, string> keyValuePairs, string rootKey, Dictionary<string, object> bigKeyValue, string directory)
         {
             string JSON = JsonConvert.SerializeObject(keyValuePairs); //Serealize Dictionary
-            bigKeyValue.Add(rootKey, JSON); // adds the rootkey and serialized dictionary to the big dictionary
+            var jsonObj = JObject.Parse(JSON);
+            bigKeyValue.Add(rootKey, jsonObj); // adds the rootkey and serialized dictionary to the big dictionary
             string newJsonString = JsonConvert.SerializeObject(bigKeyValue);//Serealize Dictionary
             Debug.Log(newJsonString);
             File.WriteAllText(directory, newJsonString);//Create Json File
@@ -108,10 +109,10 @@ namespace BME
                 temp = temp.Replace("\n", "");
                 if (temp.Contains(","))
                 {
-                    int breakindex = temp.IndexOf(",");
-                    return temp.Substring(0, breakindex);
+                    int breakindex = temp.IndexOf(',');
+                    temp = temp.Substring(0, breakindex);
                 }
-                else return temp;
+                return temp;
             }
         }
 
@@ -160,7 +161,7 @@ namespace BME
             req.uploadHandler = new UploadHandlerFile(directory);// define the json File to Upload to server
             req.downloadHandler = new DownloadHandlerBuffer(); // expected response of server, its a buffer to adjust to any response and not be empty
             req.SetRequestHeader("Content-Type", "application/json"); //Definition of Headers, cann add more like Dictionary, USED to tell server what to expect in request
-            req.SetRequestHeader("Authorization", accessToken); //Definition of Headers, cann add more like Dictionary, USED to tell server what to expect in request
+            req.SetRequestHeader("Authorization", "Bearer " + accessToken); //Definition of Headers, cann add more like Dictionary, USED to tell server what to expect in request
             #endregion
 
             yield return req.SendWebRequest();
