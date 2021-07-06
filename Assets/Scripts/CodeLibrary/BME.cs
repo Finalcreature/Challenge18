@@ -171,8 +171,14 @@ namespace BME
             if (req.isDone)
             {
                 Debug.Log(req.downloadHandler.text);
-                data = req.downloadHandler.text;
+                data = req.downloadHandler.text;               
             }
+        }
+
+        public static UserRoot GetData()
+        {
+            UserRoot root = JsonConvert.DeserializeObject<UserRoot>(data);
+            return root;
         }
     }
     public class Connection
@@ -203,5 +209,6 @@ namespace BME
             }
 
         }
+
     }
 }
