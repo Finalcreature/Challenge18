@@ -108,9 +108,13 @@ public class DashboardTest : MonoBehaviour
         _editProfileP.SetActive(false);
         _joinChallengeP.SetActive(false);
         data = File.ReadAllText(Application.dataPath + "/Resources/JsonFiles/UserDetails.json");
-        root = JasonManager.GetData();
+        root = JasonManager.GetData(data);
         SetTexts(root);
-        //SetTexts(); //TODO get the data from the server
+        Dictionary<string, string> templates = new Dictionary<string, string>();
+        templates.Add("userID", root.User.Id);
+        templates.Add("getTemplateNames", "");
+        JasonManager.CreateJson(templates, Application.dataPath + "/Resources/JsonFiles/Templates.json");
+        StartCoroutine(JasonManager.PostData(Application.dataPath + "/Resources/JsonFiles/Templates.json", root.AccessToken));
     }
 
    
@@ -137,8 +141,14 @@ public class DashboardTest : MonoBehaviour
     public void JoinChallenge()
     {
         //TODO send a post request and send it in the coroutine
-        StartCoroutine(SceneManagment.LoadScene("CurrentChallenge", 0, File.ReadAllText(Application.dataPath + "/Resources/JsonFiles/Challenge_Options.json")));
+        //StartCoroutine(SceneManagment.LoadScene("CurrentChallenge", 0, File.ReadAllText(Application.dataPath + "/Resources/JsonFiles/Challenge_Options.json")));
+        Dictionary<string, string> challengeRequest = new Dictionary<string, string>();
+        challengeRequest.Add("userID", root.User.Id);
+        challengeRequest.Add("userRequestChallenge", "New Challenge");
+        JasonManager.CreateJson(challengeRequest, Application.dataPath + "/Resources/JsonFiles/ChallengeRequest.json");
+        StartCoroutine(JasonManager.PostData(Application.dataPath + "/Resources/JsonFiles/ChallengeRequest.json", root.AccessToken));
         _joinChallengeP.SetActive(false);
+
     }
 
     public void ShowToggleSelection()
