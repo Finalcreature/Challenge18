@@ -12,6 +12,7 @@ namespace BME
 {
     public class JasonManager
     {
+        
         public static string data;
         /// <summary>
         /// Serealize Dictionary and Creates Json with RootKey attached
@@ -170,8 +171,14 @@ namespace BME
             if (req.isDone)
             {
                 Debug.Log(req.downloadHandler.text);
-                data = req.downloadHandler.text;
+                data = req.downloadHandler.text;               
             }
+        }
+
+        public static UserRoot GetData()
+        {
+            UserRoot root = JsonConvert.DeserializeObject<UserRoot>(data);
+            return root;
         }
     }
     public class Connection
@@ -202,5 +209,6 @@ namespace BME
             }
 
         }
+
     }
 }

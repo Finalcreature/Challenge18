@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using Newtonsoft.Json;
 using System.IO;
 using TMPro;
 using BME;
@@ -37,6 +37,7 @@ public class DashboardTest : MonoBehaviour
     #region Variables
 
     string data;
+    UserRoot root;
     string temp;
     [SerializeField] TextMeshProUGUI _usernameT, _phoneNumberT, _fullNameT, _emailT, _challengeLangT; //Texts == string variables from registration page
     //Maybe replace by [] and use for-loop
@@ -54,33 +55,34 @@ public class DashboardTest : MonoBehaviour
     ///
     ///if email is empty ===> _emailT.text == "Not filled yet"
     /// </summary>
-    private void SetTexts()
+    public void SetTexts(UserRoot root)
     {
-
-        _usernameT.text = JasonManager.ExtractData(data, "username");
-        _phoneNumberT.text = JasonManager.ExtractData(data, "phone");
-
-
-        // _fullNameT.text = JasonManager.ExtractData(data, "fullname");
-        //_emailT.text = JasonManager.ExtractData(data, "email");
-        //_challengeLangT.text = JasonManager.ExtractData(data, "username");
+        this.root = root;
+        _usernameT.text = root.User.Username;
+        _phoneNumberT.text = root.User.Phone;
+        _fullNameT.text = root.User.FullName;
+        _emailT.text = root.User.Email;
+       // _challengeLangT.text = JasonManager.ExtractData(data, "username");
 
     }
 
-    public void SetNewData(string newData) //TODO change string to a class
-    {
-        //TODO get the chagne request code
-        _editProfileP.SetActive(false);
-    }
+ 
+        
+    
 
-    IEnumerator GetData()
-    {
-        yield return new WaitUntil(() => JasonManager.data != "");
-        data = File.ReadAllText(Application.dataPath + "/Resources/JsonFiles/UserDetails.json");
-        SetTexts();
-    }
+    //public void SetNewData(string newData) //TODO change string to a class
+    //{
+    //    //TODO get the chagne request code
+    //    _editProfileP.SetActive(false);
+    //}
 
-    public void ShowPanel(string _panelName) //TODO connect to button
+
+    /// <summary>
+    /// <para>Based on the given parameter, the chosen panel will be active </para>
+    ///<para> Will turn off panels by default </para>
+    /// </summary>
+    /// <param name="_panelName"></param>
+    public void ShowPanel(string _panelName) 
     {
         switch (_panelName)
         {
@@ -93,28 +95,28 @@ public class DashboardTest : MonoBehaviour
                 }
                 break;
             default:
+                {
+                    _joinChallengeP.SetActive(false);
+                    _editProfileP.SetActive(false);
+                }
                 break;
         }
-        //Based on the given parameter, the chosen panel will be active
-        //Use switch method
     }
 
-
-
-    // Start is called before the first frame update
     void Start()
     {
         _editProfileP.SetActive(false);
         _joinChallengeP.SetActive(false);
-        StartCoroutine(GetData());
-
+        data = File.ReadAllText(Application.dataPath + "/Resources/JsonFiles/UserDetails.json");
+        root = JasonManager.GetData();
+        SetTexts(root);
         //SetTexts(); //TODO get the data from the server
     }
 
-    // Update is called once per frame
+   
     void Update()
     {
-
+     
         if (Application.platform == RuntimePlatform.Android)
         {
             if (Input.GetKey(KeyCode.Escape))
@@ -128,15 +130,6 @@ public class DashboardTest : MonoBehaviour
     }
 
 
-    /// <summary>
-    /// Summery:
-    ///     Choose the language the challenge will be
-    /// </summary>
-    /// <param name="index"></param>
-    public void ChangeOption(int index)
-    {
-        //TODO Change the language
-    }
 
     /// <summary>
     /// Summery: Add the challenge to the poll based on the selected topic

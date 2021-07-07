@@ -10,12 +10,12 @@
 //public static class JasonManager
 //{
 //    public static string data;
-//    /// <summary>
-//    /// Serealize Dictionary and Creates Json with RootKey attached
-//    /// </summary>
-//    /// <param name="keyValuePairs">Dictionary</param>
-//    /// <param name="rootKey">Root Key</param>
-//    /// <param name="directory">File Location</param>
+//    / <summary>
+//    / Serealize Dictionary and Creates Json with RootKey attached
+//    / </summary>
+//    / <param name="keyValuePairs">Dictionary</param>
+//    / <param name="rootKey">Root Key</param>
+//    / <param name="directory">File Location</param>
 //    public static void CreateJson(object keyValuePairs, string rootKey, string directory)
 //    {
 //        string JSON = JsonConvert.SerializeObject(keyValuePairs); //Serealize Dictionary
@@ -28,22 +28,22 @@
 //        Debug.Log(newJsonString);
 //        File.WriteAllText(directory, newJsonString);//Create Json File
 //    }
-//    /// <summary>
-//    /// Serealize Dictionary and Creates Json
-//    /// </summary>
-//    /// <param name="keyValuePairs">Dictionary</param>
-//    /// <param name="directory">File Location</param>
+//    / <summary>
+//    / Serealize Dictionary and Creates Json
+//    / </summary>
+//    / <param name="keyValuePairs">Dictionary</param>
+//    / <param name="directory">File Location</param>
 //    public static void CreateJson(object keyValuePairs, string directory)
 //    {
 //        string JSON = JsonConvert.SerializeObject(keyValuePairs); //Serealize Dictionary
 //        File.WriteAllText(directory, JSON);//Create Json File
 //    }
-//    /// <summary>
-//    /// Extracts a specific Value from a Json String 
-//    /// </summary>
-//    /// <param name="json">Json String</param>
-//    /// <param name="key">Key for a specific Value</param>
-//    /// <returns>string Value</returns>
+//    / <summary>
+//    / Extracts a specific Value from a Json String 
+//    / </summary>
+//    / <param name="json">Json String</param>
+//    / <param name="key">Key for a specific Value</param>
+//    / <returns>string Value</returns>
 //    public static string ExtractData(string json, string key)
 //    {
 //        key = "\"" + key + "\"" + ":";
@@ -96,11 +96,11 @@
 //    }
 
 
-//    /// <summary>
-//    /// Post Json from a specific library to server
-//    /// </summary>
-//    /// <param name="directory">Json file Directory</param>
-//    /// <returns></returns>
+//    / <summary>
+//    / Post Json from a specific library to server
+//    / </summary>
+//    / <param name="directory">Json file Directory</param>
+//    / <returns></returns>
 //    public static IEnumerator PostData(string directory)
 //    {
 //        data = null;
@@ -123,12 +123,12 @@
 //            data = req.downloadHandler.text;
 //        }
 //    }
-//    /// <summary>
-//    /// Post Json from a specific library to server, this method is to update data for existing user
-//    /// </summary>
-//    /// <param name="directory">Json file Directory</param>
-//    /// <param name="accessToken"></param>
-//    /// <returns></returns>
+//    / <summary>
+//    / Post Json from a specific library to server, this method is to update data for existing user
+//    / </summary>
+//    / <param name="directory">Json file Directory</param>
+//    / <param name="accessToken"></param>
+//    / <returns></returns>
 //    public static IEnumerator PostData(string directory, string accessToken)
 //    {
 //        data = null;
@@ -149,6 +149,7 @@
 //        {
 //            Debug.Log(req.downloadHandler.text);
 //            data = req.downloadHandler.text;
+//            UserRoot root = JsonConvert.DeserializeObject<UserRoot>(data);
 //        }
 //    }
 //}
