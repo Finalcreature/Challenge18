@@ -14,11 +14,11 @@ public class EditProfileLogic : MonoBehaviour
     public UserRoot root;
     private string _userId;
     private DashboardTest dashboard;
-    // Start is called before the first frame update
+  
     void Start()
     {
         data = File.ReadAllText(Application.dataPath + "/Resources/JsonFiles/UserDetails.json");
-        root = JasonManager.GetData();
+        root = JasonManager.GetData(data);
         _username.text = root.User.Username;
         _fullname.text = root.User.FullName;
         _email.text = root.User.Email;
@@ -36,7 +36,14 @@ public class EditProfileLogic : MonoBehaviour
         edit.Add("fullName", _fullname.text);
         edit.Add("language", language);
         JasonManager.CreateJson(edit, "editProfile", keys ,  Application.dataPath + "/Resources/JsonFiles/NewName.json");
-        StartCoroutine(JasonManager.PostData(Application.dataPath + "/Resources/JsonFiles/NewName.json", JasonManager.ExtractData(data,"access_token")));
+        StartCoroutine(JasonManager.PostData(Application.dataPath + "/Resources/JsonFiles/NewName.json", root.AccessToken));
+        StartCoroutine("UpdateServerDetails");
+       
+    }
+
+    private IEnumerator UpdateServerDetails()
+    {
+        yield return new WaitUntil(() => JasonManager.data != null);
         StartCoroutine(JasonManager.PostData(Application.dataPath + "/Resources/JsonFiles" + "/signIn.json"));
         StartCoroutine("UpdateUserDetails");
     }
@@ -44,8 +51,10 @@ public class EditProfileLogic : MonoBehaviour
     private IEnumerator UpdateUserDetails()
     {
         yield return new WaitUntil(() => JasonManager.data != null);
-        root = JasonManager.GetData();
+
         File.WriteAllText(Application.dataPath + "/Resources/JsonFiles" + "/UserDetails.json", JasonManager.data);
+        data = File.ReadAllText(Application.dataPath + "/Resources/JsonFiles" + "/UserDetails.json");
+        root = JasonManager.GetData(data);
         dashboard.SetTexts(root);
         dashboard.ShowPanel("off");
     }
