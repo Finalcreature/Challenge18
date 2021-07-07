@@ -52,7 +52,7 @@ public class CreateChallenge : MonoBehaviour
                 }
             }
         }
-        temp.Add(GameObject.Find("Add").GetComponent<Toggle>(), "Empty");
+        temp.Add(GameObject.Find("Add").GetComponent<Toggle>(), "(Edit Day Title)");
     }
     /// <summary>
     /// Sets up the correct title of the selected toggle
@@ -80,6 +80,11 @@ public class CreateChallenge : MonoBehaviour
     {
         darkMode.SetActive(true);
         changeDayTitleInput.SetActive(true);
+        if (dayTitles[currentToggle].Equals("(Edit Day Title)"))
+            changeDayTitleInput.GetComponent<InputField>().placeholder.GetComponent<Text>().text = "Enter Title Here";
+        else
+            changeDayTitleInput.GetComponent<InputField>().placeholder.GetComponent<Text>().text = dayTitles[currentToggle];
+
     }
     /// <summary>
     /// Saves the user input of a new title
@@ -89,7 +94,7 @@ public class CreateChallenge : MonoBehaviour
         string newTitle = changeDayTitleInput.transform.GetChild(2).gameObject.GetComponent<Text>().text;
         if (!newTitle.Equals(""))
         {
-            dayTitles[Visuals.selectedToggle.GetComponent<Toggle>()] = " - " + newTitle;
+            dayTitles[Visuals.selectedToggle.GetComponent<Toggle>()] = newTitle;
             StartCoroutine(SetUpDayTitle());
         }
     }

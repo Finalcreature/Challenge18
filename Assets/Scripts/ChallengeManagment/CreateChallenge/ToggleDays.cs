@@ -65,7 +65,7 @@ public class ToggleDays : MonoBehaviour, IPointerClickHandler
         newToggle.GetComponentInChildren<Text>().text = "Add";
         newToggle.GetComponent<Toggle>().isOn = false;
         selectedToggle.GetComponent<Toggle>().isOn = true;
-        createChallengeScript.dayTitles.Add(newToggle.GetComponent<Toggle>(), "Empty");
+        createChallengeScript.dayTitles.Add(newToggle.GetComponent<Toggle>(), "(Edit Day Title)");
         StartCoroutine(createChallengeScript.SetUpDayTitle());
     }
 }
