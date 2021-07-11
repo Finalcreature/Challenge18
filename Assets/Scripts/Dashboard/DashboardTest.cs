@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.IO;
 using TMPro;
 using BME;
@@ -36,15 +36,11 @@ public class DashboardTest : MonoBehaviour
 
     #region Variables
 
-    string data;
-    UserRoot root;
-    string temp;
-    [SerializeField] TextMeshProUGUI _usernameT, _phoneNumberT, _fullNameT, _emailT, _challengeLangT; //Texts == string variables from registration page
-    //Maybe replace by [] and use for-loop
-
-    ///*[SerializeField]???*/ Button _editProfileBtn, _joinChallengeBtn, _sideMenuBtn;
-
+    string _data;
+    UserRoot _root;
+    [SerializeField] TextMeshProUGUI _usernameT, _phoneNumberT, _fullNameT, _emailT, _challengeLangT;
     [SerializeField] GameObject _editProfileP, _joinChallengeP;
+    GameObject _challengeTemplate;
 
 
     #endregion
@@ -57,25 +53,12 @@ public class DashboardTest : MonoBehaviour
     /// </summary>
     public void SetTexts(UserRoot root)
     {
-        this.root = root;
+        this._root = root;
         _usernameT.text = root.User.Username;
         _phoneNumberT.text = root.User.Phone;
         _fullNameT.text = root.User.FullName;
         _emailT.text = root.User.Email;
-       // _challengeLangT.text = JasonManager.ExtractData(data, "username");
-
     }
-
- 
-        
-    
-
-    //public void SetNewData(string newData) //TODO change string to a class
-    //{
-    //    //TODO get the chagne request code
-    //    _editProfileP.SetActive(false);
-    //}
-
 
     /// <summary>
     /// <para>Based on the given parameter, the chosen panel will be active </para>
@@ -105,19 +88,79 @@ public class DashboardTest : MonoBehaviour
 
     void Start()
     {
+        _challengeTemplate = Resources.Load<GameObject>("Prefabs/Challenge_Template");
         _editProfileP.SetActive(false);
         _joinChallengeP.SetActive(false);
-        data = File.ReadAllText(Application.dataPath + "/Resources/JsonFiles/UserDetails.json");
-        root = JasonManager.GetData(data);
-        SetTexts(root);
-        Dictionary<string, string> templates = new Dictionary<string, string>();
-        templates.Add("userID", root.User.Id);
-        templates.Add("getTemplateNames", "");
-        JasonManager.CreateJson(templates, Application.dataPath + "/Resources/JsonFiles/Templates.json");
-        StartCoroutine(JasonManager.PostData(Application.dataPath + "/Resources/JsonFiles/Templates.json", root.AccessToken));
+        _data = File.ReadAllText(Application.dataPath + "/Resources/JsonFiles/UserDetails.json");
+        _root = JasonManager.GetData(_data);
+        SetTexts(_root);
+        Dictionary<string, string> _templates = new Dictionary<string, string>();
+        _templates.Add("userID", _root.User.Id);
+        _templates.Add("getTemplateNames", "");
+        JasonManager.CreateJson(_templates, Application.dataPath + "/Resources/JsonFiles/Templates.json");
+        StartCoroutine("GetTemplates");
     }
 
-   
+    /// <summary>
+    /// Mid function to make sure the data for the table is correct
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator GetTemplates()
+    {
+        yield return new WaitUntil(() => JasonManager.data != null);
+        StartCoroutine(JasonManager.PostData(Application.dataPath + "/Resources/JsonFiles/Templates.json", _root.AccessToken));
+        StartCoroutine("SetTable");
+    }
+
+    /// <summary>
+    /// Set the table in the dashboard according to the user's data
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator SetTable()
+    {
+        //Pereset as an array for easier for loop
+        string[] _templateKeys = { "name", "language", "day", "numOfUsers", "score", "invite" };
+        GameObject _table = GameObject.Find("Table");
+
+        yield return new WaitUntil(() => JasonManager.data != null);
+
+        #region Convert data to JObject
+        //This allows for easy access to number of keys in a token
+        JObject _temp = JObject.Parse(_data);
+        int _numOfChallenges = 0;
+
+        if (_temp.SelectToken("user.myChallenges") != null)
+        {
+            GameObject.Find("ChallengePanel").SetActive(true);
+            foreach (var key in _temp.SelectToken("user.myChallenges"))
+            {
+                _numOfChallenges++;
+            }
+
+            #endregion
+
+            #region Instantiate and fill table cells
+
+
+            for (int i = 1; i <= _numOfChallenges; i++)
+            {
+                GameObject myTemplate = Instantiate(_challengeTemplate, GameObject.Find("Table").transform.GetChild(1));
+                string template = JasonManager.ExtractData(_data, "template" + i);
+                for (int keyIndex = 0; keyIndex < _templateKeys.Length; keyIndex++)
+                {
+                    myTemplate.transform.GetChild(keyIndex).GetComponentInChildren<TextMeshProUGUI>().text = JasonManager.ExtractData(template, _templateKeys[keyIndex]);
+                }
+            }
+        }
+        else
+        {
+            GameObject.Find("ChallengePanel").SetActive(false);
+        }
+    }
+    
+        #endregion
+    
+
     void Update()
     {
      
@@ -127,13 +170,10 @@ public class DashboardTest : MonoBehaviour
             {
                 _editProfileP.SetActive(false);
                 _joinChallengeP.SetActive(false);
-
                 return;
             }
         }
     }
-
-
 
     /// <summary>
     /// Summery: Add the challenge to the poll based on the selected topic
@@ -143,10 +183,10 @@ public class DashboardTest : MonoBehaviour
         //TODO send a post request and send it in the coroutine
         //StartCoroutine(SceneManagment.LoadScene("CurrentChallenge", 0, File.ReadAllText(Application.dataPath + "/Resources/JsonFiles/Challenge_Options.json")));
         Dictionary<string, string> challengeRequest = new Dictionary<string, string>();
-        challengeRequest.Add("userID", root.User.Id);
+        challengeRequest.Add("userID", _root.User.Id);
         challengeRequest.Add("userRequestChallenge", "New Challenge");
         JasonManager.CreateJson(challengeRequest, Application.dataPath + "/Resources/JsonFiles/ChallengeRequest.json");
-        StartCoroutine(JasonManager.PostData(Application.dataPath + "/Resources/JsonFiles/ChallengeRequest.json", root.AccessToken));
+        StartCoroutine(JasonManager.PostData(Application.dataPath + "/Resources/JsonFiles/ChallengeRequest.json", _root.AccessToken));
         _joinChallengeP.SetActive(false);
 
     }
