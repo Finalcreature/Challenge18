@@ -46,6 +46,7 @@ public class AddTask : MonoBehaviour, IPointerClickHandler
         newTaskButton.name = "Task " + taskNum;
         newTaskButton.GetComponentInChildren<Text>().text = "Task " + taskNum;
         newTaskButton.GetComponent<AddTask>().enabled = false;
+        newTaskButton.AddComponent<TasksManager>();
     }
     /// <summary>
     /// adds a new row if the last row has more then 5 elements

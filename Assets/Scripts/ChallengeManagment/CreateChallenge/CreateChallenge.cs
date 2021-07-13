@@ -23,6 +23,7 @@ public class CreateChallenge : MonoBehaviour
     public Challenge challengeOptions;// the complete challenge edited by the user
     [SerializeField] GameObject TaskToggle;//Task Buttons Field
     bool isTasksCleared;//bool for waiting tasks to clear before setting new ones
+    public GameObject taskPanel;//Panel to edit tasks
 
     // Start is called before the first frame update
     void Start()
@@ -37,8 +38,10 @@ public class CreateChallenge : MonoBehaviour
         //FillDictionary(dayTitles);
         totalDays = 18;
         darkMode = GameObject.Find("DarkTheme");
-        if (darkMode != null) darkMode.SetActive(false);
+        darkMode.SetActive(false);
         dayTitle = GameObject.Find("Day Title").GetComponent<TMP_Text>();
+        taskPanel = GameObject.Find("TaskPanel");
+        taskPanel.SetActive(false);
         StartCoroutine(SetUpDayTitle());
     }
     ///// <summary>
