@@ -5,16 +5,16 @@ using UnityEngine;
 public class Task 
 {
     public int taskLevel;
-    public string taskDescription;
+    public List <string> taskOptions;
     public string taskTitle;
     public bool isTaskCompleted;
 
-     public Task(int taskLevel, string taskDescription, string taskTheme, bool isTaskCompleted)
+     public Task(int taskLevel, string taskTheme, bool isTaskCompleted, List<string> taskOptions)
     {
         this.taskLevel = taskLevel;
-        this.taskDescription = taskDescription;
         this.isTaskCompleted = isTaskCompleted;
         this.taskTitle = taskTheme;
+        this.taskOptions = taskOptions;
     }
     public Task GetNextTask(Day activeDay, Task activeTask)
     {
