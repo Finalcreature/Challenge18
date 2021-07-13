@@ -90,7 +90,10 @@ public class SignInEngine : MonoBehaviour
             File.WriteAllText(jsonLocation + "/UserDetails.json", JasonManager.data);
             //Login Approved
             if (!keepSignedIn)
+            {
                 File.Delete(jsonLocation + "/signIn.json");
+            }
+                
             StartCoroutine(SceneManagment.LoadScene("Dashboard", 0));           //Send to Dashboard
         }
     }

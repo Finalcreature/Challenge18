@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.IO;
 using TMPro;
 using BME;
@@ -44,7 +45,13 @@ public class EditProfileLogic : MonoBehaviour
     private IEnumerator UpdateServerDetails()
     {
         yield return new WaitUntil(() => JasonManager.data != null);
-        StartCoroutine(JasonManager.PostData(Application.dataPath + "/Resources/JsonFiles" + "/signIn.json"));
+        Dictionary<string, string> signIn = new Dictionary<string, string>()
+        {
+            {"username",root.User.Username },
+            {"phone", root.User.Phone}
+        };
+        JasonManager.CreateJson(signIn, "signIn", Application.dataPath + "/Resources/JsonFiles/UpdateDetails.json");
+        StartCoroutine(JasonManager.PostData(Application.dataPath + "/Resources/JsonFiles/UpdateDetails.json"));
         StartCoroutine("UpdateUserDetails");
     }
 

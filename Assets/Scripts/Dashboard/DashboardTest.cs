@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 using System.IO;
 using TMPro;
 using BME;
@@ -37,10 +38,12 @@ public class DashboardTest : MonoBehaviour
     #region Variables
 
     string _data;
+    static string _category;
     UserRoot _root;
     [SerializeField] TextMeshProUGUI _usernameT, _phoneNumberT, _fullNameT, _emailT, _challengeLangT;
     [SerializeField] GameObject _editProfileP, _joinChallengeP;
-    GameObject _challengeTemplate;
+    GameObject _challengeTemplate, _challengePanel;
+    int _numOfChallenges;
 
 
     #endregion
@@ -75,6 +78,7 @@ public class DashboardTest : MonoBehaviour
             case ("Join"):
                 { _joinChallengeP.SetActive(true);
                     Visuals.SelectToggle();
+                    _category = "SDG International";
                 }
                 break;
             default:
@@ -88,16 +92,13 @@ public class DashboardTest : MonoBehaviour
 
     void Start()
     {
+        _challengePanel = GameObject.Find("ChallengePanel");
         _challengeTemplate = Resources.Load<GameObject>("Prefabs/Challenge_Template");
         _editProfileP.SetActive(false);
         _joinChallengeP.SetActive(false);
         _data = File.ReadAllText(Application.dataPath + "/Resources/JsonFiles/UserDetails.json");
         _root = JasonManager.GetData(_data);
-        SetTexts(_root);
-        Dictionary<string, string> _templates = new Dictionary<string, string>();
-        _templates.Add("userID", _root.User.Id);
-        _templates.Add("getTemplateNames", "");
-        JasonManager.CreateJson(_templates, Application.dataPath + "/Resources/JsonFiles/Templates.json");
+        SetTexts(_root); 
         StartCoroutine("GetTemplates");
     }
 
@@ -107,6 +108,11 @@ public class DashboardTest : MonoBehaviour
     /// <returns></returns>
     private IEnumerator GetTemplates()
     {
+        Dictionary<string, string> _templates = new Dictionary<string, string>();
+        _templates.Add("userID", _root.User.Id);
+        _templates.Add("getTemplateNames", "");
+        JasonManager.CreateJson(_templates, Application.dataPath + "/Resources/JsonFiles/Templates.json");
+        _numOfChallenges = 0;
         yield return new WaitUntil(() => JasonManager.data != null);
         StartCoroutine(JasonManager.PostData(Application.dataPath + "/Resources/JsonFiles/Templates.json", _root.AccessToken));
         StartCoroutine("SetTable");
@@ -120,21 +126,26 @@ public class DashboardTest : MonoBehaviour
     {
         //Pereset as an array for easier for loop
         string[] _templateKeys = { "name", "language", "day", "numOfUsers", "score", "invite" };
-        GameObject _table = GameObject.Find("Table");
+       
 
         yield return new WaitUntil(() => JasonManager.data != null);
+        _data = JasonManager.data;
 
         #region Convert data to JObject
         //This allows for easy access to number of keys in a token
         JObject _temp = JObject.Parse(_data);
-        int _numOfChallenges = 0;
+        
+        print(_temp.SelectToken("user.myChallenges"));
 
         if (_temp.SelectToken("user.myChallenges") != null)
         {
-            GameObject.Find("ChallengePanel").SetActive(true);
-            foreach (var key in _temp.SelectToken("user.myChallenges"))
+            _challengePanel.SetActive(true);
+            if(_numOfChallenges == 0)
             {
-                _numOfChallenges++;
+                foreach (var key in _temp.SelectToken("user.myChallenges"))
+                {
+                    _numOfChallenges++;
+                }
             }
 
             #endregion
@@ -154,7 +165,7 @@ public class DashboardTest : MonoBehaviour
         }
         else
         {
-            GameObject.Find("ChallengePanel").SetActive(false);
+            _challengePanel.SetActive(false);
         }
     }
     
@@ -184,15 +195,28 @@ public class DashboardTest : MonoBehaviour
         //StartCoroutine(SceneManagment.LoadScene("CurrentChallenge", 0, File.ReadAllText(Application.dataPath + "/Resources/JsonFiles/Challenge_Options.json")));
         Dictionary<string, string> challengeRequest = new Dictionary<string, string>();
         challengeRequest.Add("userID", _root.User.Id);
-        challengeRequest.Add("userRequestChallenge", "New Challenge");
+        challengeRequest.Add("userRequestChallenge", _category);
         JasonManager.CreateJson(challengeRequest, Application.dataPath + "/Resources/JsonFiles/ChallengeRequest.json");
         StartCoroutine(JasonManager.PostData(Application.dataPath + "/Resources/JsonFiles/ChallengeRequest.json", _root.AccessToken));
         _joinChallengeP.SetActive(false);
 
+        if(GameObject.Find("Table"))
+        {
+            foreach(Transform child in (GameObject.Find("Table").transform.GetChild(1)))
+            {
+                Destroy(child.gameObject);
+            }
+        }
+        StartCoroutine("GetTemplates");
     }
 
     public void ShowToggleSelection()
     {
         Visuals.SelectToggle();
+    }
+
+    public void SetCategory(string category)
+    {
+        _category = category;
     }
 }
