@@ -175,9 +175,18 @@ namespace BME
             }
         }
 
-        public static UserRoot GetData()
+        public static UserRoot GetData(string json)
         {
-            UserRoot root = JsonConvert.DeserializeObject<UserRoot>(data);
+
+            UserRoot root = JsonConvert.DeserializeObject<UserRoot>(json);
+            if (root != null)
+            {
+                if (root.AccessToken.Contains("\""))
+                {
+                    root.AccessToken = root.AccessToken.Replace("\"", "");
+                    Debug.Log(root.AccessToken);
+                }
+            }
             return root;
         }
     }
@@ -208,6 +217,12 @@ namespace BME
                 }
             }
 
+        }
+
+        public static void SelectToggle(Toggle t)
+        {
+            t.targetGraphic.color = t.colors.selectedColor;
+            selectedToggle = t.gameObject;
         }
 
     }

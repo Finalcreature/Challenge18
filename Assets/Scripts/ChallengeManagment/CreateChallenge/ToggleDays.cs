@@ -11,27 +11,25 @@ public class ToggleDays : MonoBehaviour, IPointerClickHandler
     [SerializeField] GameObject addRow; //Add row Prefab
     GameObject daysField; //Field of all Toggles
     CreateChallenge createChallengeScript;//Main script of Scene
+    Toggle currentToggle;
     // Start is called before the first frame update
     void Start()
     {
         Visuals.SelectToggle();
         createChallengeScript = GameObject.Find("Canvas").GetComponent<CreateChallenge>();
         daysField = GameObject.Find("DaysToggle");
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        currentToggle = Visuals.selectedToggle.GetComponent<Toggle>();
     }
     public virtual void OnPointerClick(PointerEventData eventData)
     {
         Visuals.SelectToggle(); //Colors the selected Toggle
         GameObject selectedToggle = Visuals.selectedToggle;
+        createChallengeScript.currentToggle = selectedToggle.GetComponent<Toggle>();
+        StartCoroutine(createChallengeScript.SetUpDayTitle());
         if (selectedToggle.name == "Add" || selectedToggle.name == "Add(Clone)")
         {
             createChallengeScript.totalDays++;
-            selectedToggle.name = "Day" + createChallengeScript.totalDays.ToString();
+            selectedToggle.name = "Day " + createChallengeScript.totalDays.ToString();
             selectedToggle.GetComponentInChildren<Text>().text = "Day " + createChallengeScript.totalDays.ToString();
             if (selectedToggle.transform.parent.childCount < 4)
             {
@@ -52,6 +50,7 @@ public class ToggleDays : MonoBehaviour, IPointerClickHandler
     private GameObject AddNewRow()
     {
         GameObject newRow = Instantiate(addRow, daysField.transform);
+        newRow.name = "Row" + (daysField.transform.childCount - 1);
         return newRow;
     }
     /// <summary>
@@ -66,5 +65,7 @@ public class ToggleDays : MonoBehaviour, IPointerClickHandler
         newToggle.GetComponentInChildren<Text>().text = "Add";
         newToggle.GetComponent<Toggle>().isOn = false;
         selectedToggle.GetComponent<Toggle>().isOn = true;
+        createChallengeScript.dayTitles.Add(newToggle.GetComponent<Toggle>(), "(Edit Day Title)");
+        StartCoroutine(createChallengeScript.SetUpDayTitle());
     }
 }
