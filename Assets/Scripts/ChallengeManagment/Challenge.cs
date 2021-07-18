@@ -10,7 +10,7 @@ public class Challenge
 {
     public string challengeID;
     public string challengeTemplate;
-    public Day[] daysArr = new Day[18];
+    public List<Day> daysArr = new List<Day>();
     private string challengePoolJSON;
 
     public Challenge(string JSON) 
@@ -19,17 +19,9 @@ public class Challenge
         //Currently not working as there is no full challenge json coming from server
         //challengeTemplate = JasonManager.ExtractData(challengePoolJSON, "template"); 
         //challengeID = JasonManager.ExtractData(challengePoolJSON, "id");
-        int dayIndex = 0;
-        foreach (Day day in daysArr)
+        for(int i = 1; i <=18; i ++)
         {
-            daysArr[dayIndex] = FillDay(dayIndex);
-            dayIndex++;
+            daysArr.Add(new Day(i, challengePoolJSON));
         }
-    }
-
-    private Day FillDay(int dayIndex)
-    {
-        string currentDayJSON = JasonManager.ExtractData(challengePoolJSON, "day" + (dayIndex + 1).ToString());
-        return new Day(dayIndex + 1, JasonManager.ExtractData(currentDayJSON, "title"), JasonManager.ExtractData(currentDayJSON, "tasks"));
     }
 }

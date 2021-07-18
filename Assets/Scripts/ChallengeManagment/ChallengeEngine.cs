@@ -35,7 +35,7 @@ public class ChallengeEngine : MonoBehaviour
         challenge = new Challenge(challengeJSON);
         challengeName.text = challenge.challengeTemplate;
         challengeProgressBar.value = 0;
-        challengeFillValue = 1f / challenge.daysArr.Length;
+        challengeFillValue = 1f / challenge.daysArr.Count;
         //Fill up completed tasks for Checking:
         //int tasksCompleted = Random.Range(1, 20);
         //foreach(Day d in challenge.daysArr) 
@@ -53,7 +53,7 @@ public class ChallengeEngine : MonoBehaviour
         foreach(Day day in challenge.daysArr)
         {
             dayProgressBar.value = 0;
-            dayFillValue = 1f / day.tasks.Length;
+            dayFillValue = 1f / day.tasks.Count;
             foreach (Task task in day.tasks)
             {
                 if (!task.isTaskCompleted)
@@ -109,11 +109,11 @@ public class ChallengeEngine : MonoBehaviour
         dayNum.text = "Day: " + activeDay.dayNum.ToString();
         dayTheme.text = activeDay.dayTitle;
         taskLevel.text = "Task: " + activeTask.taskLevel.ToString();
-        taskDescription.text = activeTask.taskDescription;
-        if (activeTask.taskDescription.Contains("http"))
+        taskDescription.text = activeTask.taskOptions[1];
+        if (activeTask.taskOptions.Contains("http"))
         {
-            int startIndex = activeTask.taskDescription.IndexOf("http");
-            string temp = activeTask.taskDescription.Substring(startIndex);
+            int startIndex = activeTask.taskOptions.IndexOf("http");
+            string temp = activeTask.taskOptions[1].Substring(startIndex);
             int length = temp.IndexOf(" ");
             taskUrl = temp.Substring(0, length);
             linkButton.gameObject.SetActive(true);

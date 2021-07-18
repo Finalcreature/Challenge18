@@ -5,20 +5,18 @@ using UnityEngine.UI;
 using BME;
 using UnityEngine.EventSystems;
 
-public class ToggleDays : MonoBehaviour, IPointerClickHandler
+public class ManageDayToggle : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] GameObject addToggle; //Add toggle Prefab
     [SerializeField] GameObject addRow; //Add row Prefab
     GameObject daysField; //Field of all Toggles
     CreateChallenge createChallengeScript;//Main script of Scene
-    Toggle currentToggle;
     // Start is called before the first frame update
     void Start()
     {
         Visuals.SelectToggle();
         createChallengeScript = GameObject.Find("Canvas").GetComponent<CreateChallenge>();
         daysField = GameObject.Find("DaysToggle");
-        currentToggle = Visuals.selectedToggle.GetComponent<Toggle>();
     }
     public virtual void OnPointerClick(PointerEventData eventData)
     {
@@ -65,7 +63,8 @@ public class ToggleDays : MonoBehaviour, IPointerClickHandler
         newToggle.GetComponentInChildren<Text>().text = "Add";
         newToggle.GetComponent<Toggle>().isOn = false;
         selectedToggle.GetComponent<Toggle>().isOn = true;
-        createChallengeScript.dayTitles.Add(newToggle.GetComponent<Toggle>(), "(Edit Day Title)");
+        createChallengeScript.challengeOptions.daysArr.Add(new Day(createChallengeScript.totalDays, ""));
+        //createChallengeScript.dayTitles.Add(newToggle.GetComponent<Toggle>(), "(Edit Day Title)");
         StartCoroutine(createChallengeScript.SetUpDayTitle());
     }
 }
