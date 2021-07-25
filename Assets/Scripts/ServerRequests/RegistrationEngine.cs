@@ -163,4 +163,9 @@ public class RegistrationEngine : MonoBehaviour
         field.transform.GetChild(3).gameObject.SetActive(false);
         field.GetComponent<Image>().color = Color.white;
     }
+
+    public void LoadSignInPage()
+    {
+       StartCoroutine(SceneManagment.LoadScene("SignIn",0));
+    }
 }
