@@ -9,12 +9,14 @@ public class AddTask : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] GameObject addRow; //Add row Prefab
     GameObject tasksField; //Field of all Toggles
+    GameObject taskPanel;
     CreateChallenge createChallengeScript;//Main script of Scene
 
     public void Start()
     {
         tasksField = GameObject.Find("TaskToggle");
         createChallengeScript = GameObject.Find("Canvas").GetComponent<CreateChallenge>();
+        taskPanel = GameObject.Find("TaskPanel");
     }
     public virtual void OnPointerClick(PointerEventData eventData)
     {
@@ -46,7 +48,7 @@ public class AddTask : MonoBehaviour, IPointerClickHandler
         newTaskButton.name = "Task " + taskNum;
         newTaskButton.GetComponentInChildren<Text>().text = "Task " + taskNum;
         newTaskButton.GetComponent<AddTask>().enabled = false;
-        newTaskButton.AddComponent<TasksManager>();
+        newTaskButton.GetComponent<Button>().onClick.AddListener(() => { taskPanel.GetComponent<EditTask>().ManageTask(taskNum); });
     }
     /// <summary>
     /// adds a new row if the last row has more then 5 elements

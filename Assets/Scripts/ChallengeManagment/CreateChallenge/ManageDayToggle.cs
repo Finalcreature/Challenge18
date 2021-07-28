@@ -14,14 +14,12 @@ public class ManageDayToggle : MonoBehaviour, IPointerClickHandler
     // Start is called before the first frame update
     void Start()
     {
-        Visuals.SelectToggle();
-        createChallengeScript = GameObject.Find("Canvas").GetComponent<CreateChallenge>();
         daysField = GameObject.Find("DaysToggle");
+        createChallengeScript = GameObject.Find("Canvas").GetComponent<CreateChallenge>();
     }
     public virtual void OnPointerClick(PointerEventData eventData)
     {
-        Visuals.SelectToggle(); //Colors the selected Toggle
-        GameObject selectedToggle = Visuals.selectedToggle;
+        GameObject selectedToggle = Visuals.SelectToggle(createChallengeScript.dayToggles); //Colors the selected Toggle
         createChallengeScript.currentToggle = selectedToggle.GetComponent<Toggle>();
         StartCoroutine(createChallengeScript.SetUpDayTitle());
         if (selectedToggle.name == "Add" || selectedToggle.name == "Add(Clone)")
@@ -62,9 +60,10 @@ public class ManageDayToggle : MonoBehaviour, IPointerClickHandler
         newToggle.name = "Add";
         newToggle.GetComponentInChildren<Text>().text = "Add";
         newToggle.GetComponent<Toggle>().isOn = false;
+        newToggle.GetComponent<Toggle>().targetGraphic.color = newToggle.GetComponent<Toggle>().colors.normalColor; 
         selectedToggle.GetComponent<Toggle>().isOn = true;
+        createChallengeScript.dayToggles.Add(newToggle.GetComponent<Toggle>());
         createChallengeScript.challengeOptions.daysArr.Add(new Day(createChallengeScript.totalDays, ""));
-        //createChallengeScript.dayTitles.Add(newToggle.GetComponent<Toggle>(), "(Edit Day Title)");
         StartCoroutine(createChallengeScript.SetUpDayTitle());
     }
 }

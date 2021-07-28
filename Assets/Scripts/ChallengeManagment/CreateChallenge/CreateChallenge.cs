@@ -13,29 +13,35 @@ public class CreateChallenge : MonoBehaviour
     [SerializeField] GameObject changeDayTitleInput; 
     TMP_Text dayTitle;
     string currentToggleText; //Current day text
-    int currentDayIndex;
+    public int currentDayIndex;
     public int totalDays;
     public int totalTasks;
     string ChallengeOptionsJSON;
-    //public Dictionary<Toggle, string> dayTitles; //Days + Titles
     public Toggle currentToggle; //current toggle selected
     GameObject daysField; // Game Object Contains all toggles
     public Challenge challengeOptions;// the complete challenge edited by the user
     [SerializeField] GameObject TaskToggle;//Task Buttons Field
     bool isTasksCleared;//bool for waiting tasks to clear before setting new ones
     public GameObject taskPanel;//Panel to edit tasks
+    public List<Toggle> dayToggles = new List<Toggle>();//List of all day Toggles
+    List<Task> tasks = new List<Task>();
 
     // Start is called before the first frame update
     void Start()
     {
         daysField = GameObject.Find("DaysToggle");
-        currentToggle = Visuals.selectedToggle.GetComponent<Toggle>();
+        foreach (Transform child in daysField.transform)
+        {
+            foreach (Transform c in child.transform)
+            {
+                dayToggles.Add(c.GetComponent<Toggle>());
+            }
+        }
+        currentToggle = Visuals.SelectToggle(dayToggles).GetComponent<Toggle>();
         currentToggleText = currentToggle.GetComponentInChildren<Text>().text;
         currentDayIndex = SplitStringInt(currentToggleText);
         ChallengeOptionsJSON = File.ReadAllText(Application.dataPath + "/Resources/JsonFiles/Challenge_Options.json");
         challengeOptions = new Challenge(ChallengeOptionsJSON);
-        //dayTitles = new Dictionary<Toggle, string>();
-        //FillDictionary(dayTitles);
         totalDays = 18;
         darkMode = GameObject.Find("DarkTheme");
         darkMode.SetActive(false);
@@ -44,27 +50,7 @@ public class CreateChallenge : MonoBehaviour
         taskPanel.SetActive(false);
         StartCoroutine(SetUpDayTitle());
     }
-    ///// <summary>
-    ///// Fills up Dictionary with Toggles and titles
-    ///// </summary>
-    ///// <param name="temp"></param>
-    //private void FillDictionary(Dictionary<Toggle, string> temp)
-    //{
-    //    Toggle[] toggles = FindObjectsOfType<Toggle>();
-    //    for (int i = 1; i < toggles.Length; i++)
-    //    {
-    //        foreach (Toggle t in toggles)
-    //        {
-    //            if (SplitStringInt(t.GetComponentInChildren<Text>().text) == i)
-    //            {
-    //                string currentIndex = t.GetComponentInChildren<Text>().text;
-    //                currentIndex = currentIndex.Replace(" ", "");
-    //                temp.Add(t, JasonManager.ExtractData(JasonManager.ExtractData(ChallengeOptionsJSON, currentIndex.ToLower()), "title"));
-    //            }
-    //        }
-    //    }
-    //    temp.Add(GameObject.Find("Add").GetComponent<Toggle>(), "(Edit Day Title)");
-    //}
+
     /// <summary>
     /// Sets up the correct title of the selected toggle
     /// </summary>
@@ -114,7 +100,7 @@ public class CreateChallenge : MonoBehaviour
         currentToggle = Visuals.selectedToggle.GetComponent<Toggle>();
         int destroyedIndex = SplitStringInt(currentToggle.name);
         challengeOptions.daysArr.RemoveAt(destroyedIndex - 1);
-        //dayTitles.Remove(currentToggle);
+        dayToggles.Remove(currentToggle);
         GameObject destroyedObjRow = currentToggle.transform.parent.gameObject;
         Destroy(currentToggle.gameObject);
         Visuals.selectedToggle = null;
@@ -216,5 +202,7 @@ public class CreateChallenge : MonoBehaviour
             totalTasks++;
             TaskToggle.GetComponentInChildren<AddTask>().AddNewTask(totalTasks);
         }
+        
     }
+
 }

@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System.IO;
 using TMPro;
 using BME;
+using UnityEngine.UI;
 
 public class DashboardTest : MonoBehaviour
 {
@@ -44,6 +45,7 @@ public class DashboardTest : MonoBehaviour
     [SerializeField] GameObject _editProfileP, _joinChallengeP;
     GameObject _challengeTemplate, _challengePanel;
     int _numOfChallenges;
+    List<Toggle> toggles;
 
 
     #endregion
@@ -77,7 +79,7 @@ public class DashboardTest : MonoBehaviour
                 break;
             case ("Join"):
                 { _joinChallengeP.SetActive(true);
-                    Visuals.SelectToggle();
+                    Visuals.SelectToggle(toggles);
                     _category = "SDG International";
                 }
                 break;
@@ -92,6 +94,7 @@ public class DashboardTest : MonoBehaviour
 
     void Start()
     {
+        toggles = new List<Toggle>(FindObjectsOfType<Toggle>());
         _challengePanel = GameObject.Find("ChallengePanel");
         _challengeTemplate = Resources.Load<GameObject>("Prefabs/Challenge_Template");
         _editProfileP.SetActive(false);
@@ -212,7 +215,7 @@ public class DashboardTest : MonoBehaviour
 
     public void ShowToggleSelection()
     {
-        Visuals.SelectToggle();
+        Visuals.SelectToggle(toggles);
     }
 
     public void SetCategory(string category)

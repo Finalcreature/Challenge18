@@ -202,10 +202,10 @@ namespace BME
     public class Visuals 
     {
         public static GameObject selectedToggle;
-        public static void SelectToggle()
+        public static GameObject SelectToggle(List<Toggle> toggles)
         {
             selectedToggle = null;
-            foreach (Toggle t in MonoBehaviour.FindObjectsOfType<Toggle>())
+            foreach (Toggle t in toggles)
             {
                 if (t.isOn)
                 {
@@ -217,6 +217,11 @@ namespace BME
                     t.targetGraphic.color = t.colors.normalColor;
                 }
             }
+            return selectedToggle;
+
+        }
+        public static void ChangeToggle(Toggle oldT, Toggle newT)
+        {
 
         }
 
